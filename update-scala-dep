@@ -1,11 +1,10 @@
 #!/bin/bash
 
 TEAM_ID=`cat team-id.albert.txt`
-
-FILE=$1
-SEARCH_TEXT=$2
-NEW_TEXT=$3
-COMMIT_MSG=$4
+FILE="build.sbt"
+OLD_VERSION=$1
+NEW_VERSION=$2
+COMMIT_MSG=$3
 
 if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
     ACCESS_TOKEN=`cat ~/.github_token`
@@ -20,12 +19,12 @@ replace_text(){
     SEPARATOR="~"
 
     # Use another separator if input strings contain default separator
-    if [[ "$SEARCH_TEXT$NEW_TEXT" = *"$SEPARATOR"* ]]; then
+    if [[ "$OLD_VERSION$NEW_VERSION" = *"$SEPARATOR"* ]]; then
         echo "It's there!"
         SEPARATOR="%"
     fi
 
-	gsed -i "s$SEPARATOR$SEARCH_TEXT$SEPARATOR$NEW_TEXT$SEPARATOR" $FILE
+	gsed -i "s$SEPARATOR$OLD_VERSION$SEPARATOR$NEW_VERSION$SEPARATOR" $FILE
 }
 
 # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
@@ -48,6 +47,14 @@ for REPO in $REPO_NAMES; do
 			git pull
 
 			replace_text
+
+            if [[ "$DO_SBT_TEST" ]]; then
+                if [ -f sbt ]; then
+                    ./sbt test
+                else
+                    sbt test
+                fi
+            fi
 
 			git diff
 
