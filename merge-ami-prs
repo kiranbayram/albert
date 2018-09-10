@@ -1,0 +1,68 @@
+#!/bin/bash
+
+TEAM_ID=`cat team-id.albert.txt`
+
+if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
+    ACCESS_TOKEN=`cat ~/.github_token`
+fi
+
+if [[ "$ACCESS_TOKEN" == "" ]]; then
+    echo "Please set env variable ACCESS_TOKEN to a Github access token or store it in ~/.github_token; go to https://github.com/settings/tokens to create one."
+    exit 1;
+fi
+
+
+# filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
+REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
+
+REPO_NAMES=`http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort`
+
+echo -e "Merging AMI pull request in `echo "$REPO_NAMES" | wc -l` repositories\n"
+
+merge_pr() {
+    PR_NUMBER=$1
+
+    echo -n "Merging PR $PR_NUMBER... "
+
+    RESULT=`http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=rebase`
+
+    MERGED=`echo "$RESULT" | jq ".merged"`
+
+    if [[ "$MERGED" == "true" ]]; then
+        echo "$(tput setaf 2)merged$(tput sgr0)"
+    else
+        MESSAGE=`echo "$RESULT" | jq ".message"`
+        echo "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)"
+    fi
+
+}
+
+for REPO in $REPO_NAMES; do
+    PULL_REQUESTS=`http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"AMI is updated\")))"`
+
+    PR_COUNT=`echo "$PULL_REQUESTS" | jq "length"`
+
+    if [[ $PR_COUNT -eq 1 ]]; then
+        PR_TITLE=`echo "$PULL_REQUESTS" | jq ".[0].title"`
+        PR_NUMBER=`echo "$PULL_REQUESTS" | jq ".[0].number"`
+
+
+        if [[ "$PR_TITLE" =~ "AMI is updated" ]]; then
+            echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
+            echo "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
+
+            merge_pr $PR_NUMBER
+        else
+            echo "$(tput bold)$REPO:$(tput sgr0) Open PR in $REPO is no AMI update"
+        fi
+
+        echo
+    elif [[ $PR_COUNT -gt 1 ]]; then
+        echo "$(tput bold)$REPO$(tput sgr0)"
+        echo "$(tput bold)$(tput setaf 1)More than 1 PR open; cannot automatically merge$(tput sgr0)"
+        echo
+    else
+        echo "$(tput bold)$REPO$(tput sgr0): no PR found"
+        echo
+    fi
+done;

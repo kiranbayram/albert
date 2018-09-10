@@ -7,6 +7,9 @@ COMMAND=$1
 if [[ "$COMMAND" == "list-repos" ]]; then
 	./list-repos
 	exit 0
+elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
+	./merge-ami-prs
+	exit 0
 else
 	echo "Nothing to do !"
 	exit 0
