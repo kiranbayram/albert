@@ -34,7 +34,7 @@ REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
 REPO_NAMES=`http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort`
 
 for REPO in $REPO_NAMES; do
-	echo "=====$REPO====="
+	echo "$(tput bold)=====$REPO=====$(tput sgr0)"
 	cd ~/git/$REPO
 	if [ $? -ne 0 ]; then
 		git clone git@github.com:Scout24/$REPO.git
@@ -54,13 +54,33 @@ for REPO in $REPO_NAMES; do
 			read -p "Should i commit and push changes? [y/n] " -n 1 -r
 			echo
 
-			if [[ $REPLY =~ ^[Yy]$ ]]
-			then
+			if [[ $REPLY =~ ^[Yy]$ ]]; then
                 git add -A
 				git commit -m "$COMMIT_MSG"
 				git push
 			else
 				git stash
+                read -p "Should i open the original file with vim? [y/n] " -n 1 -r
+			    echo
+
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                    vim $FILE
+                    git diff
+
+                    read -p "Should i commit and push changes? [y/n]" -n 1 -r
+			        echo
+
+                    if [[ $REPLY =~ ^[Yy]$ ]]
+                    then
+                        git add -A
+                        git commit -m "$COMMIT_MSG"
+                        git push
+                    else
+                        git stash
+                    fi
+                else
+                    git stash
+                fi
 			fi
 
 	fi
