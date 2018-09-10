@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # FED team ID
-TEAM_ID=2005108
+TEAM_ID=`cat team-id.albert.txt`
 
 if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
     ACCESS_TOKEN=`cat ~/.github_token`
