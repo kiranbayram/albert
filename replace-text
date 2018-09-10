@@ -2,25 +2,10 @@
 
 TEAM_ID=`cat team-id.albert.txt`
 
-COMMAND=$1
-
-if [[ "$COMMAND" == "list-repos" ]]; then
-	./list-repos
-	exit 0
-elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
-	./merge-ami-prs
-	exit 0
-elif [[ "$COMMAND" == "replace-text" ]]; then
-	./replace-text $2 $3 $4 $5
-	exit 0
-else
-	echo "Nothing to do !"
-	exit 0
-fi
-
 FILE=$1
 SEARCH_TEXT=$2
 NEW_TEXT=$3
+COMMIT_MSG=$4
 
 if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
     ACCESS_TOKEN=`cat ~/.github_token`
@@ -31,7 +16,9 @@ if [[ "$ACCESS_TOKEN" == "" ]]; then
     exit 1;
 fi
 
-TEAMS=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN"`
+replace_text(){
+	gsed -i "s;$SEARCH_TEXT;$NEW_TEXT;" $FILE
+}
 
 # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
 REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
@@ -52,7 +39,7 @@ for REPO in $REPO_NAMES; do
 			git checkout master
 			git pull
 
-			# use_invoked_build_number
+			replace_text
 
 			git diff
 
@@ -61,7 +48,8 @@ for REPO in $REPO_NAMES; do
 
 			if [[ $REPLY =~ ^[Yy]$ ]]
 			then
-				git commit -am "Use invoked build number"
+                git add -A
+				git commit -m "$COMMIT_MSG"
 				git push
 			else
 				git stash
