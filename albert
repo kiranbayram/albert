@@ -9,67 +9,10 @@ if [[ "$COMMAND" == "list-repos" ]]; then
 elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
 	./merge-ami-prs
 elif [[ "$COMMAND" == "replace-text" ]]; then
-	./replace-text $2 $3 $4 $5
+	./replace-text "$2" "$3" "$4" "$5"
 elif [[ "$COMMAND" == "setup" ]]; then
-	./setup
+	./setup "$2"
 else
 	echo "Nothing to do !"
 fi
-
-FILE=$1
-SEARCH_TEXT=$2
-NEW_TEXT=$3
-
-if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
-    ACCESS_TOKEN=`cat ~/.github_token`
-fi
-
-if [[ "$ACCESS_TOKEN" == "" ]]; then
-    echo "Please set env variable ACCESS_TOKEN to a Github access token or store it in ~/.github_token; go to https://github.com/settings/tokens to create one."
-    exit 1;
-fi
-
-TEAMS=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN"`
-
-# filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
-REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
-
-REPO_NAMES=`http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort`
-
-for REPO in $REPO_NAMES; do
-	echo "=====$REPO====="
-	cd ~/git/$REPO
-	if [ $? -ne 0 ]; then
-		git clone git@github.com:Scout24/$REPO.git
-		cd $REPO
-	fi
-
-	if [ -f Jenkinsfile ]; then
-
-			git stash
-			git checkout master
-			git pull
-
-			# use_invoked_build_number
-
-			git diff
-
-			read -p "Should i commit and push changes? [y/n] " -n 1 -r
-			echo
-
-			if [[ $REPLY =~ ^[Yy]$ ]]
-			then
-				git commit -am "Use invoked build number"
-				git push
-			else
-				git stash
-			fi
-
-	fi
-
-	cd ~/git
-
-    continue
-done;
-
 
