@@ -18,11 +18,11 @@ fi
 
 replace_text(){
     SEPARATOR="~"
-    
+
     # Use another separator if input strings contain default separator
     if [[ "$SEARCH_TEXT$NEW_TEXT" = *"$SEPARATOR"* ]]; then
         echo "It's there!"
-        SEPARATOR="^"
+        SEPARATOR="%"
     fi
 
 	gsed -i "s$SEPARATOR$SEARCH_TEXT$SEPARATOR$NEW_TEXT$SEPARATOR" $FILE
