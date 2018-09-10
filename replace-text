@@ -17,7 +17,15 @@ if [[ "$ACCESS_TOKEN" == "" ]]; then
 fi
 
 replace_text(){
-	gsed -i "s;$SEARCH_TEXT;$NEW_TEXT;" $FILE
+    SEPARATOR="~"
+    
+    # Use another separator if input strings contain default separator
+    if [[ "$SEARCH_TEXT$NEW_TEXT" = *"$SEPARATOR"* ]]; then
+        echo "It's there!"
+        SEPARATOR="^"
+    fi
+
+	gsed -i "s$SEPARATOR$SEARCH_TEXT$SEPARATOR$NEW_TEXT$SEPARATOR" $FILE
 }
 
 # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
