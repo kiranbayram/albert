@@ -2,10 +2,10 @@
 
 TEAM_ID=`cat team-id.albert.txt`
 
-FILE=$1
-SEARCH_TEXT=$2
-NEW_TEXT=$3
-COMMIT_MSG=$4
+FILE="$1"
+SEARCH_TEXT="$2"
+NEW_TEXT="$3"
+COMMIT_MSG="$4"
 
 if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
     ACCESS_TOKEN=`cat ~/.github_token`

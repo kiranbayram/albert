@@ -2,9 +2,9 @@
 
 TEAM_ID=`cat team-id.albert.txt`
 FILE="build.sbt"
-OLD_VERSION=$1
-NEW_VERSION=$2
-COMMIT_MSG=$3
+OLD_VERSION="$1"
+NEW_VERSION="$2"
+COMMIT_MSG="$3"
 
 if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
     ACCESS_TOKEN=`cat ~/.github_token`

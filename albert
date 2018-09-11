@@ -12,6 +12,8 @@ elif [[ "$COMMAND" == "replace-text" ]]; then
 	./replace-text "$2" "$3" "$4" "$5"
 elif [[ "$COMMAND" == "setup" ]]; then
 	./setup "$2"
+elif [[ "$COMMAND" == "execute" ]]; then
+	./execute "$2"
 else
 	echo "Nothing to do !"
 fi
