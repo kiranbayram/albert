@@ -5,13 +5,9 @@ source "$MY_DIR/util"
 
 check_access_token
 
-TEAM_ID=`cat team-id.albert.txt`
 COMMAND="$1"
 
-# filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
-REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
-
-REPO_NAMES=`http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort`
+REPO_NAMES=$(get_repos)
 
 for REPO in $REPO_NAMES; do
 	echo "$(tput bold)=====$REPO=====$(tput sgr0)"
@@ -27,5 +23,3 @@ for REPO in $REPO_NAMES; do
 
     continue
 done;
-
-
