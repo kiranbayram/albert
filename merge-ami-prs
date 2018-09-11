@@ -1,16 +1,11 @@
 #!/bin/bash
 
+MY_DIR="$(dirname "$0")"
+source "$MY_DIR/util"
+
+check_access_token
+
 TEAM_ID=`cat team-id.albert.txt`
-
-if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
-    ACCESS_TOKEN=`cat ~/.github_token`
-fi
-
-if [[ "$ACCESS_TOKEN" == "" ]]; then
-    echo "Please set env variable ACCESS_TOKEN to a Github access token or store it in ~/.github_token; go to https://github.com/settings/tokens to create one."
-    exit 1;
-fi
-
 
 # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
 REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"

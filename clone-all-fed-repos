@@ -12,7 +12,6 @@ if [[ "$ACCESS_TOKEN" == "" ]]; then
     exit 1;
 fi
 
-
 # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
 REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
 

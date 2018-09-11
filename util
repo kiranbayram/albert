@@ -1,0 +1,12 @@
+#!/bin/bash
+
+check_access_token(){
+    if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
+        ACCESS_TOKEN=`cat ~/.github_token`
+    fi
+
+    if [[ "$ACCESS_TOKEN" == "" ]]; then
+        echo "Please set env variable ACCESS_TOKEN to a Github access token or store it in ~/.github_token; go to https://github.com/settings/tokens to create one."
+        exit 1;
+    fi
+}
