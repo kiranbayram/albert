@@ -1,10 +1,8 @@
 #!/bin/bash
 
-#ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
-
-#brew install gnu-sed
-#brew install httpie
-#brew install jq
+brew install gnu-sed
+brew install httpie
+brew install jq
 
 if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
     ACCESS_TOKEN=`cat ~/.github_token`
