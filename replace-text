@@ -7,6 +7,8 @@ FILE="$1"
 SEARCH_TEXT="$2"
 NEW_TEXT="$3"
 COMMIT_MSG="$4"
+SBT=$5
+YARN=$6
 
 check_access_token
 
@@ -40,6 +42,20 @@ for REPO in $REPO_NAMES; do
 			git_refresh
 
 			replace_text
+
+            if [[ $SBT ]]; then
+                scloud account login as24dev PowerUserAccess
+                if [ -f ./sbt ]; then
+                    ./sbt test
+                else
+                    sbt test
+                fi
+            fi
+
+            if [[ $YARN ]]; then
+                yarn install
+                gulp test
+            fi
 
 			git diff
 
