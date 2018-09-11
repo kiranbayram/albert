@@ -42,6 +42,8 @@ for REPO in $REPO_NAMES; do
 
 	if [ -f "$FILE" ]; then
 
+        grep -q "$SEARCH_TEXT" "$FILE"
+        if [ $? -eq 0 ]; then
 			git stash
 			git checkout master
 			git pull
@@ -89,7 +91,7 @@ for REPO in $REPO_NAMES; do
                     git stash
                 fi
 			fi
-
+        fi
 	fi
 
 	cd ~/git
