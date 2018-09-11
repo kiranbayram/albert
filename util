@@ -19,3 +19,16 @@ get_repos(){
 
     http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort
 }
+
+git_refresh(){
+    git stash
+    git checkout master
+    git pull
+}
+
+git_commit_and_push(){
+    COMMIT_MSG="$1"
+    git add -A
+    git commit -m "$COMMIT_MSG"
+    git push
+}

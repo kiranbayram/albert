@@ -37,9 +37,7 @@ for REPO in $REPO_NAMES; do
 
         grep -q "$SEARCH_TEXT" "$FILE"
         if [ $? -eq 0 ]; then
-			git stash
-			git checkout master
-			git pull
+			git_refresh
 
 			replace_text
 
@@ -49,9 +47,7 @@ for REPO in $REPO_NAMES; do
 			echo
 
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
-                git add -A
-				git commit -m "$COMMIT_MSG"
-				git push
+                git_commit_and_push
 			else
 				git stash
                 read -p "Should i open the original file with vim? [y/n] " -n 1 -r
@@ -64,11 +60,8 @@ for REPO in $REPO_NAMES; do
                     read -p "Should i commit and push changes? [y/n]" -n 1 -r
 			        echo
 
-                    if [[ $REPLY =~ ^[Yy]$ ]]
-                    then
-                        git add -A
-                        git commit -m "$COMMIT_MSG"
-                        git push
+                    if [[ $REPLY =~ ^[Yy]$ ]]; then
+                        git_commit_and_push
                     else
                         git stash
                     fi
@@ -83,5 +76,3 @@ for REPO in $REPO_NAMES; do
 
     continue
 done;
-
-
