@@ -7,11 +7,8 @@ source "$MY_DIR/util"
 OPTIND=2         # Reset in case getopts has been used previously in the shell. Value is 2 because this is a sub-script.
 # TODO: Set OPTIND to 1 when this script is called directly
 
-# Initialize our own variables
 YARN=0
 SBT=0
-
-echo $@
 
 while getopts "sy:" opt; do
     case "$opt" in
@@ -25,12 +22,7 @@ while getopts "sy:" opt; do
     esac
 done
 
-echo $SBT
-
 shift $((OPTIND-1))
-
-echo $@
-#exit 0
 
 FILE="$1"
 SEARCH_TEXT="$2"
@@ -71,15 +63,11 @@ for REPO in $REPO_NAMES; do
 			replace_text
 
             if [[ $SBT == 1 ]]; then
-                # TODO: Login and use sbt test. This starts a subshell for unknown reasons
-                # scloud account login as24dev PowerUserAccess
-                echo "would have used sbt"
-                exit 0
+                aws_login as24dev PowerUserAccess
                 if [ -f ./sbt ]; then
-                    # TODO: do we need clean compile?
-                    ./sbt clean test:compile
+                    ./sbt clean test
                 else
-                    sbt clean test:compile
+                    sbt clean test
                 fi
             fi
 

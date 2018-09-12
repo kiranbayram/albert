@@ -32,3 +32,7 @@ git_commit_and_push(){
     git commit -m "$COMMIT_MSG"
     git push
 }
+
+aws_login () { 
+    eval "$(scloud account login -e "$1" "$2")"
+}
