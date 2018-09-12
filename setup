@@ -6,55 +6,8 @@ USAGE+="Example: ./albert $(basename "$0") \"ConMon\""
 
 [[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
-MY_DIR="$(dirname "$0")"
-source "$MY_DIR/util"
-
 brew install gnu-sed
 brew install httpie
 brew install jq
 
-# TODO: Move below part to another operation called setup-team
-check_access_token
-
-GIVEN_NAME="$2"
-
-# TEAMS=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN"`
-
-# filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
-TEAM_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id)"
-
-TEAM_ID_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id) | .[1]"
-
-TEAM_INFO=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN" | jq "$TEAM_FILTER"`
-TEAM_ID=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER"`
-
-echo "Found team name and id: $TEAM_INFO"
-echo
-
-read -p "Is this correct team? [y/n] " -n 1 -r
-echo
-
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo $TEAM_ID > team-id.albert.txt
-else
-    read -p "Please enter team github slug (check the url):"
-
-    if [[ "$REPLY" == "" ]]; then
-        echo "Empty slug is not accepted. Please use correct team name or slug."
-        exit 1
-    fi
-
-    TEAM_ID_FILTER="map(select(.slug | contains(\"$REPLY\"))) | map(.name, .id) | .[1]"
-    TEAM_ID=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER"`
-
-    echo $TEAM_ID
-
-    if [[ "$TEAM_ID" == "" ]] || [[ "$TEAM_ID" == null ]]; then
-        echo "Given slug wasn't found! Please use correct team name or slug."
-        exit 1
-    else
-        echo $TEAM_ID > team-id.albert.txt
-    fi
-fi
-
-exit 0
+./set-team "$@"
