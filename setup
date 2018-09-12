@@ -1,5 +1,11 @@
 #!/bin/bash
 
+USAGE="Installs necessary tools and sets up github team id which is needed for all operations.\n"
+USAGE+="Usage: ./albert $(basename "$0") \"github_team_name\"\n"
+USAGE+="Example: ./albert $(basename "$0") \"ConMon\""
+
+[[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
+
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
 
@@ -7,9 +13,10 @@ brew install gnu-sed
 brew install httpie
 brew install jq
 
+# TODO: Move below part to another operation called setup-team
 check_access_token
 
-GIVEN_NAME=$1
+GIVEN_NAME="$2"
 
 # TEAMS=`http GET "https://api.github.com/orgs/Scout24/teams?access_token=$ACCESS_TOKEN"`
 
@@ -50,3 +57,4 @@ else
     fi
 fi
 
+exit 0
