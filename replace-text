@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USAGE="Replaces some text and pushes that to master if requested in all repos.\n"
+USAGE="Replaces some text and pushes that to master if requested in all repos. Meta variable REPO can be used for repository name.\n"
 USAGE+="Usage: ./$(basename "$0") file \"search_string\" \"new_text\" \"commit_message\"\n"
 USAGE+="Example: ./$(basename "$0") Jenkinsfile \"input 'Continue?'\" \"timeout(time: 1, unit: 'HOURS') { input 'Continue?' }\" \"Add timeout for Jenkins approval stages\""
 
@@ -41,12 +41,11 @@ replace_text(){
     SEPARATOR="~"
 
     # Use another separator if input strings contain default separator
-    if [[ "$SEARCH_TEXT$NEW_TEXT" = *"$SEPARATOR"* ]]; then
-        echo "It's there!"
+    if [[ "$1$2" = *"$SEPARATOR"* ]]; then
         SEPARATOR="%"
     fi
 
-	gsed -i "s$SEPARATOR$SEARCH_TEXT$SEPARATOR$NEW_TEXT$SEPARATOR" $FILE
+	gsed -i "s$SEPARATOR$1$SEPARATOR$2$SEPARATOR" $FILE
 }
 
 REPO_NAMES=$(get_repos)
@@ -58,10 +57,13 @@ for REPO in $REPO_NAMES; do
     cd "$REPO"
 
     git_refresh
-    
-	if grep -q "$SEARCH_TEXT" $FILE 2> /dev/null ; then
 
-        replace_text
+    LOCAL_SEARCH_TEXT="${SEARCH_TEXT//REPO/$REPO}"
+
+	if grep -q "$LOCAL_SEARCH_TEXT" $FILE 2> /dev/null ; then
+
+        LOCAL_NEW_TEXT="${NEW_TEXT//REPO/$REPO}"
+        replace_text "$LOCAL_SEARCH_TEXT" "$LOCAL_NEW_TEXT"
 
         if [[ $SBT == 1 ]]; then
             aws_login as24dev PowerUserAccess
@@ -79,22 +81,19 @@ for REPO in $REPO_NAMES; do
 
         git diff
 
-        read -p "Should i commit and push changes? [y/n] " -n 1 -r
-        echo
+        read -p "Should i commit and push changes? [y/n] " -n 1 -r; echo
 
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             git_commit_and_push "$COMMIT_MSG"
         else
             git stash
-            read -p "Should i open the original file with vim? [y/n] " -n 1 -r
-            echo
+            read -p "Should i open the original file with vim? [y/n] " -n 1 -r; echo
 
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 vim $FILE
                 git diff
 
-                read -p "Should i commit and push changes? [y/n]" -n 1 -r
-                echo
+                read -p "Should i commit and push changes? [y/n]" -n 1 -r; echo
 
                 if [[ $REPLY =~ ^[Yy]$ ]]; then
                     git_commit_and_push
