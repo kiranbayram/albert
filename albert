@@ -1,7 +1,5 @@
 #!/bin/bash
 
-TEAM_ID=`cat team-id.albert.txt`
-
 COMMAND=$1
 
 if [[ "$COMMAND" == "list-repos" ]]; then
@@ -9,7 +7,7 @@ if [[ "$COMMAND" == "list-repos" ]]; then
 elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
 	./merge-ami-prs
 elif [[ "$COMMAND" == "replace-text" ]]; then
-	./replace-text "$2" "$3" "$4" "$5"
+	./replace-text "$@"
 elif [[ "$COMMAND" == "setup" ]]; then
 	./setup "$2"
 elif [[ "$COMMAND" == "execute" ]]; then
@@ -19,4 +17,3 @@ elif [[ "$COMMAND" == "clone-all-repos" ]]; then
 else
 	echo "Nothing to do !"
 fi
-

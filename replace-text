@@ -3,12 +3,39 @@
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
 
+# A POSIX variable
+OPTIND=2         # Reset in case getopts has been used previously in the shell. Value is 2 because this is a sub-script.
+# TODO: Set OPTIND to 1 when this script is called directly
+
+# Initialize our own variables
+YARN=0
+SBT=0
+
+echo $@
+
+while getopts "sy:" opt; do
+    case "$opt" in
+    y)	YARN=1
+        ;;
+    s)  SBT=1
+        ;;
+    *)  echo "Invalid option"
+        exit 1
+        ;;
+    esac
+done
+
+echo $SBT
+
+shift $((OPTIND-1))
+
+echo $@
+#exit 0
+
 FILE="$1"
 SEARCH_TEXT="$2"
 NEW_TEXT="$3"
 COMMIT_MSG="$4"
-SBT=$5
-YARN=$6
 
 check_access_token
 
@@ -43,16 +70,20 @@ for REPO in $REPO_NAMES; do
 
 			replace_text
 
-            if [[ $SBT ]]; then
-                scloud account login as24dev PowerUserAccess
+            if [[ $SBT == 1 ]]; then
+                # TODO: Login and use sbt test. This starts a subshell for unknown reasons
+                # scloud account login as24dev PowerUserAccess
+                echo "would have used sbt"
+                exit 0
                 if [ -f ./sbt ]; then
-                    ./sbt test
+                    # TODO: do we need clean compile?
+                    ./sbt clean test:compile
                 else
-                    sbt test
+                    sbt clean test:compile
                 fi
             fi
 
-            if [[ $YARN ]]; then
+            if [[ $YARN == 1 ]]; then
                 yarn install
                 gulp test
             fi
