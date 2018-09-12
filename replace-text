@@ -4,11 +4,6 @@ USAGE="Replaces some text and pushes that to master if requested in all repos.\n
 USAGE+="Usage: ./$(basename "$0") file \"search_string\" \"new_text\" \"commit_message\"\n"
 USAGE+="Example: ./$(basename "$0") Jenkinsfile \"input 'Continue?'\" \"timeout(time: 1, unit: 'HOURS') { input 'Continue?' }\" \"Add timeout for Jenkins approval stages\""
 
-if [ -z "$1" ]; then
-	echo -e "$USAGE"
-	exit 1
-fi
-
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
 
@@ -32,6 +27,8 @@ while getopts "sy:" opt; do
 done
 
 shift $((OPTIND-1))
+
+[[ $# != 4 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 FILE="$1"
 SEARCH_TEXT="$2"

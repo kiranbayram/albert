@@ -4,10 +4,7 @@ USAGE="Executes given command in all repos. Meta variable REPO can be used for r
 USAGE+="Usage: ./$(basename "$0") \"bash_code\"\n"
 USAGE+="Example: ./$(basename "$0") \"echo REPO > repo-name.txt\""
 
-if [ -z "$1" ]; then
-	echo -e "$USAGE"
-	exit 1
-fi
+[[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"

@@ -9,9 +9,9 @@ elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
 elif [[ "$COMMAND" == "replace-text" ]]; then
 	./replace-text "$@"
 elif [[ "$COMMAND" == "setup" ]]; then
-	./setup "$2"
+	./setup "$@"
 elif [[ "$COMMAND" == "execute" ]]; then
-	./execute "$2"
+	./execute "$@"
 elif [[ "$COMMAND" == "clone-all-repos" ]]; then
 	./clone-all-repos
 else
