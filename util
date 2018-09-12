@@ -20,10 +20,11 @@ get_repos(){
     http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort
 }
 
+# TODO: Make this function safer, so that we don't accidentally cause people to lose changes
 git_refresh(){
     git stash
     git checkout master
-    git pull
+    git pull --rebase
 }
 
 git_commit_and_push(){
