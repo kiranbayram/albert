@@ -1,5 +1,14 @@
 #!/bin/bash
 
+USAGE="Executes given command in all repos. Meta variable REPO can be used for repository name.\n"
+USAGE+="Usage: ./$(basename "$0") \"bash_code\"\n"
+USAGE+="Example: ./$(basename "$0") \"echo REPO > repo-name.txt\""
+
+if [ -z "$1" ]; then
+	echo -e "$USAGE"
+	exit 1
+fi
+
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
 
@@ -17,7 +26,7 @@ for REPO in $REPO_NAMES; do
 		cd $REPO
 	fi
 
-    ${COMMAND//REPO/$REPO}
+    eval "${COMMAND//REPO/$REPO}"
 
 	cd ~/git
 
