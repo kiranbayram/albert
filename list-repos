@@ -1,4 +1,8 @@
 #!/bin/bash
+USAGE="Lists all repos owned by the team\n"
+USAGE+="Usage: albert list-repos"
+
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"

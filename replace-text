@@ -1,8 +1,7 @@
 #!/bin/bash
-
 USAGE="Replaces some text and pushes that to master if requested in all repos. Meta variable REPO can be used for repository name.\n"
-USAGE+="Usage: ./$(basename "$0") [ -s | -y ] file \"search_string\" \"new_text\" \"commit_message\"\n"
-USAGE+="Example: ./$(basename "$0") Jenkinsfile \"input 'Continue?'\" \"timeout(time: 1, unit: 'HOURS') { input 'Continue?' }\" \"Add timeout for Jenkins approval stages\"\n"
+USAGE+="Usage: albert $(basename "$0") [ -s | -y ] file \"search_string\" \"new_text\" \"commit_message\"\n"
+USAGE+="Example: albert $(basename "$0") Jenkinsfile \"input 'Continue?'\" \"timeout(time: 1, unit: 'HOURS') { input 'Continue?' }\" \"Add timeout for Jenkins approval stages\"\n"
 USAGE+="-s : Execute 'sbt clean test' for every repo which is changed\n"
 USAGE+="-y : Execute 'yarn install && gulp test' for every repo which is changed"
 
@@ -30,7 +29,7 @@ done
 
 shift $((OPTIND-1))
 
-[[ $# != 4 ]] && { echo -e "Wrong number of arguments!\n\n$USAGE"; exit 1; }  # Show usage when argument count is wrong
+[[ $# != 4 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 FILE="$1"
 SEARCH_TEXT="$2"

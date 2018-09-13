@@ -1,9 +1,9 @@
 #!/bin/bash
+USAGE="Installs necessary tools, add some configuration to .bash_profile and sets up github team id which is needed for all operations.\n"
+USAGE+="Usage: ./$(basename "$0") \"github team name\"\n"
+USAGE+="Example: ./$(basename "$0") \"ConMon\""
 
-USAGE="Installs necessary tools and sets up github team id which is needed for all operations.\n"
-USAGE+="Usage: ./albert $(basename "$0") \"github_team_name\"\n"
-USAGE+="Example: ./albert $(basename "$0") \"ConMon\""
-
+[[ "$1" == "help" ]] && { echo -e "$USAGE"; exit 0; }
 [[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 brew install gnu-sed

@@ -1,24 +1,45 @@
 #!/bin/bash
 
 MY_DIR="$(dirname "$0")"
-
 COMMAND=$1
 
+help(){
+	echo "Available operations are listed below:"
+
+	echo -e "$(tput bold)\nlist-repos$(tput sgr0)"
+	$MY_DIR/list-repos help
+
+	echo -e "$(tput bold)\nmerge-ami-prs$(tput sgr0)"
+	$MY_DIR/merge-ami-prs "help"
+
+	echo -e "$(tput bold)\nreplace-text$(tput sgr0)"
+	$MY_DIR/replace-text "help"
+
+	echo -e "$(tput bold)\nset-team$(tput sgr0)"
+	$MY_DIR/set-team "help"
+
+	echo -e "$(tput bold)\nexecute$(tput sgr0)"
+	$MY_DIR/execute "help"
+
+	echo -e "$(tput bold)\nclone-all-repos$(tput sgr0)"
+	$MY_DIR/clone-all-repos "help"
+}
+
 if [[ "$COMMAND" == "list-repos" ]]; then
-	$MY_DIR/list-repos
+	$MY_DIR/list-repos "$@"
 elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
-	$MY_DIR/merge-ami-prs
+	$MY_DIR/merge-ami-prs "$@"
 elif [[ "$COMMAND" == "replace-text" ]]; then
 	$MY_DIR/replace-text "$@"
-elif [[ "$COMMAND" == "setup" ]]; then
-	$MY_DIR/setup "$@"
 elif [[ "$COMMAND" == "set-team" ]]; then
 	$MY_DIR/set-team "$@"
 elif [[ "$COMMAND" == "execute" ]]; then
 	$MY_DIR/execute "$@"
 elif [[ "$COMMAND" == "clone-all-repos" ]]; then
-	$MY_DIR/clone-all-repos
+	$MY_DIR/clone-all-repos "$@"
+elif [[ "$COMMAND" == "help" ]]; then
+	help
 else
-	echo -e "Operation not recognised!\nValid operations:\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos"
+	echo -e "Valid operations:\nhelp\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos"
 	exit 1
 fi

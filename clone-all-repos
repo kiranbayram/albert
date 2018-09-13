@@ -1,4 +1,8 @@
 #!/bin/bash
+USAGE="Clones all repositories owned by the team under ~/git folder\n"
+USAGE+="Usage: albert clone-all-repos"
+
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
@@ -6,7 +10,6 @@ source "$MY_DIR/util"
 check_access_token
 
 REPO_NAMES=$(get_repos)
-
 for REPO in $REPO_NAMES; do
 
     echo $REPO
@@ -14,5 +17,6 @@ for REPO in $REPO_NAMES; do
     cd ~/git
 
     git clone git@github.com:Scout24/$REPO.git
-
 done;
+
+exit 0

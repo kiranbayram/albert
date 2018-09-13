@@ -1,9 +1,9 @@
 #!/bin/bash
-
 USAGE="Executes given command in all repos. Meta variable REPO can be used for repository name.\n"
-USAGE+="Usage: ./albert $(basename "$0") \"bash_code\"\n"
-USAGE+="Example: ./albert $(basename "$0") \"echo REPO > repo-name.txt\""
+USAGE+="Usage: albert $(basename "$0") \"bash code\"\n"
+USAGE+="Example: albert $(basename "$0") \"echo REPO > repo-name.txt\""
 
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
 [[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 MY_DIR="$(dirname "$0")"

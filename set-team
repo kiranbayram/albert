@@ -1,9 +1,9 @@
 #!/bin/bash
-USAGE="Sets github team id which is needed for all operations.\n"
-USAGE+="Usage: ./albert $(basename "$0") \"github_team_name\"\n"
-USAGE+="Example: ./albert $(basename "$0") \"ConMon\""
+USAGE="Sets or changes github team id which is needed for all operations.\n"
+USAGE+="Usage: albert $(basename "$0") \"github team name\"\n"
+USAGE+="Example: albert $(basename "$0") \"ConMon\""
 
-[[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"

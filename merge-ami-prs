@@ -1,4 +1,8 @@
 #!/bin/bash
+USAGE="Merges AMI pull requests in all repositories where such PR exists.\n"
+USAGE+="Usage: albert merge-ami-prs"
+
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
