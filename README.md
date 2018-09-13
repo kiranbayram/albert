@@ -1,23 +1,45 @@
 #### Albert is a script to assist you do simple changes to multiple repos efficiently
 
-```albert set-team finance```
-- it asks confirmation if only one matched, lists all with indexes if multiple matches
+### Setup
+- Installs necessary tools and sets up github team id which is needed for all operations.
+- **Usage:** ```./albert setup "github_team_name"```
+- **Example:** ```./albert setup "ConMon"```
 
-```albert replace-line [file path] [search string] [new string]```
+### List repos
+- Lists all repos owned by the team
+- **Usage:** ```./albert list-repos```
 
-```albert replace-text [file path] [search string] [new string]```
+### Replace text
+- Replaces some text and pushes that to master if requested in all repositories. 
+- Meta variable REPO can be used for repository name.
+- **Usage:** ```./albert replace-text [ -s | -y ] file "search_string" "new_text" "commit_message"```
+- **Example:** ```./albert replace-text Jenkinsfile "input 'Continue?'" "timeout(time: 1, unit: 'HOURS') { input 'Continue?' }" "Add timeout for Jenkins approval stages"```
+- **-s** : Execute 'sbt clean test' for every repo which is changed
+- **-y** : Execute 'yarn install && gulp test' for every repo which is changed
+#### Operation workflow
+- Albert does the change and shows git diff
+- User can review
+- User can confirm - If confirmed, albert commits and pushes it to master branch
+- User can skip
+- User can reject change and ask for vim to do the change on the fly
 
-```albert update-dependency-version [library name] [new version number]```
-- For this operation, we can include sbt compile/test to inform user if everything is alright after version update
+### Execute
+- Executes given command in all repositories. 
+- Meta variable REPO can be used for repository name.
+- **Usage:** ```./albert execute "bash_code"```
+- **Example:** ```./albert execute "echo REPO > repo-name.txt"```
 
-```albert does the change and shows git diff```
-- user can review
-- user can confirm - If confirmed, albert commits and pushes it to master branch
-- user can skip
-- user can reject change and ask for vi to do the change on the fly
+### Merge AMI pull requests
+- Merges most recent AMI pull requests
+- **Usage:** ```./albert merge-ami-prs```
+
+### Set team
+- Sets up github team id which is needed for all operations.
+- **Usage:** ```./albert set-team "github_team_name"```
+- **Example:** ```./albert set-team "ConMon"```
 
 
-#### Extra functions:
-- Merge most recent AMI update PRs
-- Add/remove a user/team to/from all repos
-- Log list repo names which are skipped or rejected by user at the end of execution, so that user can continue with those manually
+### Clone all repositories
+- Clones all repositories owned by the team under ~/git folder
+- **Usage:** ```./albert clone-all-repos```
+
