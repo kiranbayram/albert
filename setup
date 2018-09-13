@@ -4,14 +4,14 @@ USAGE+="Usage: ./$(basename "$0") \"github team name\"\n"
 USAGE+="Example: ./$(basename "$0") \"ConMon\""
 
 [[ "$1" == "help" ]] && { echo -e "$USAGE"; exit 0; }
-[[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
+[[ $# != 1 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 brew install gnu-sed
 brew install httpie
 brew install jq
 
 MY_DIR="$(dirname "$0")"
-$MY_DIR/set-team "$@"
+$MY_DIR/set-team "$1"
 
 grep -q "alias albert" ~/.bash_profile 2> /dev/null
 if [ $? -ne 0 ]; then

@@ -11,6 +11,7 @@ source "$MY_DIR/util"
 check_access_token
 
 GIVEN_NAME="$2"
+[[ "$GIVEN_NAME" == "" ]] && { GIVEN_NAME="$1"; }
 
 TEAM_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id)"
 TEAM_ID_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id) | .[1]"
