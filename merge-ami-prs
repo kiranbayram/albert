@@ -19,10 +19,10 @@ merge_pr() {
     MERGED=`echo "$RESULT" | jq ".merged"`
 
     if [[ "$MERGED" == "true" ]]; then
-        echo "$(tput setaf 2)merged$(tput sgr0)"
+        echo -e "$(tput setaf 2)merged$(tput sgr0)\n"
     else
         MESSAGE=`echo "$RESULT" | jq ".message"`
-        echo "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)"
+        echo -e "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)\n"
     fi
 
 }
@@ -36,23 +36,14 @@ for REPO in $REPO_NAMES; do
         PR_TITLE=`echo "$PULL_REQUESTS" | jq ".[0].title"`
         PR_NUMBER=`echo "$PULL_REQUESTS" | jq ".[0].number"`
 
+        echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
+        echo -e "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
 
-        if [[ "$PR_TITLE" =~ "AMI is updated" ]]; then
-            echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
-            echo "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
-
-            merge_pr $PR_NUMBER
-        else
-            echo "$(tput bold)$REPO:$(tput sgr0) Open PR in $REPO is no AMI update"
-        fi
-
-        echo
+        merge_pr $PR_NUMBER
     elif [[ $PR_COUNT -gt 1 ]]; then
         echo "$(tput bold)$REPO$(tput sgr0)"
-        echo "$(tput bold)$(tput setaf 1)More than 1 PR open; cannot automatically merge$(tput sgr0)"
-        echo
+        echo -e "$(tput bold)$(tput setaf 1)More than 1 PR open; cannot automatically merge$(tput sgr0)\n"
     else
-        echo "$(tput bold)$REPO$(tput sgr0): no PR found"
-        echo
+        echo -e "$(tput bold)$REPO$(tput sgr0): no PR found\n"
     fi
 done;
