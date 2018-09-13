@@ -10,4 +10,6 @@ brew install gnu-sed
 brew install httpie
 brew install jq
 
-./set-team "$@"
+MY_DIR="$(dirname "$0")"
+
+$MY_DIR/set-team "$@"

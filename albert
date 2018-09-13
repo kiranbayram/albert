@@ -1,21 +1,23 @@
 #!/bin/bash
 
+MY_DIR="$(dirname "$0")"
+
 COMMAND=$1
 
 if [[ "$COMMAND" == "list-repos" ]]; then
-	./list-repos
+	$MY_DIR/list-repos
 elif [[ "$COMMAND" == "merge-ami-prs" ]]; then
-	./merge-ami-prs
+	$MY_DIR/merge-ami-prs
 elif [[ "$COMMAND" == "replace-text" ]]; then
-	./replace-text "$@"
+	$MY_DIR/replace-text "$@"
 elif [[ "$COMMAND" == "setup" ]]; then
-	./setup "$@"
+	$MY_DIR/setup "$@"
 elif [[ "$COMMAND" == "set-team" ]]; then
-	./set-team "$@"
+	$MY_DIR/set-team "$@"
 elif [[ "$COMMAND" == "execute" ]]; then
-	./execute "$@"
+	$MY_DIR/execute "$@"
 elif [[ "$COMMAND" == "clone-all-repos" ]]; then
-	./clone-all-repos
+	$MY_DIR/clone-all-repos
 else
 	echo -e "Operation not recognised!\nValid operations:\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos"
 	exit 1

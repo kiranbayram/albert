@@ -23,7 +23,7 @@ echo -e "Found team name and id: $TEAM_INFO\n"
 read -p "Is this correct team? [y/n] " -n 1 -r; echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo $TEAM_ID > team-id.albert.txt
+    echo $TEAM_ID > $MY_DIR/team-id.albert.txt
 else
     read -p "Please enter team github slug (check the url):"
 
@@ -39,7 +39,7 @@ else
         echo "Given slug wasn't found! Please use correct team name or slug."
         exit 1
     else
-        echo $TEAM_ID > team-id.albert.txt
+        echo $TEAM_ID > $MY_DIR/team-id.albert.txt
     fi
 fi
 
