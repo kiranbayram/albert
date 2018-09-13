@@ -1,4 +1,4 @@
-#### Albert is a script to assist you do simple changes to multiple repos efficiently
+#### Albert is a collection of commands to make it easier to work with several repos
 
 ### Setup
 - Installs necessary tools and sets up github team id which is needed for all operations.
