@@ -11,5 +11,12 @@ brew install httpie
 brew install jq
 
 MY_DIR="$(dirname "$0")"
-
 $MY_DIR/set-team "$@"
+
+grep -q "alias albert" ~/.bash_profile 2> /dev/null
+if [ $? -ne 0 ]; then
+    printf "\nsource ~/git/albert/bash_completion\n" >> ~/.bash_profile
+    printf "alias albert=\"~/git/albert/albert\"\n" >> ~/.bash_profile
+fi
+
+exit 0
