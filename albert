@@ -17,5 +17,6 @@ elif [[ "$COMMAND" == "execute" ]]; then
 elif [[ "$COMMAND" == "clone-all-repos" ]]; then
 	./clone-all-repos
 else
-	echo "Nothing to do !"
+	echo -e "Operation not recognised!\nValid operations:\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos"
+	exit 1
 fi
