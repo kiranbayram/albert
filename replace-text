@@ -1,9 +1,10 @@
 #!/bin/bash
 USAGE="Replaces some text and pushes that to master if requested in all repos. Meta variable REPO can be used for repository name.\n"
-USAGE+="Usage: albert $(basename "$0") [ -s | -y ] file \"search_string\" \"new_text\" \"commit_message\"\n"
+USAGE+="Usage: albert $(basename "$0") [ -s | -y  | -d ] file \"search_string\" \"new_text\" \"commit_message\"\n"
 USAGE+="Example: albert $(basename "$0") Jenkinsfile \"input 'Continue?'\" \"timeout(time: 1, unit: 'HOURS') { input 'Continue?' }\" \"Add timeout for Jenkins approval stages\"\n"
 USAGE+="-s : Execute 'sbt clean test' for every repo which is changed\n"
-USAGE+="-y : Execute 'yarn install && gulp test' for every repo which is changed"
+USAGE+="-y : Execute 'yarn install && gulp test' for every repo which is changed\n"
+USAGE+="-d : Dry run, changes aren't committed and pushed"
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
@@ -14,12 +15,15 @@ OPTIND=2         # Reset in case getopts has been used previously in the shell. 
 
 YARN=0
 SBT=0
+DRY_RUN=0
 
-while getopts "sy:" opt; do
+while getopts "syd:" opt; do
     case "$opt" in
-    y)	YARN=1
+    y)	YARN=1;
         ;;
     s)  SBT=1
+        ;;
+    d)  DRY_RUN=1;OPTIND=3;
         ;;
     *)  echo "Invalid option"
         exit 1
@@ -85,7 +89,7 @@ for REPO in $REPO_NAMES; do
         read -p "Should i commit and push changes? [y/n] " -n 1 -r; echo
 
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            git_commit_and_push "$COMMIT_MSG"
+            git_commit_and_push "$COMMIT_MSG" $DRY_RUN
         else
             git stash
             read -p "Should i open the original file with vim? [y/n] " -n 1 -r; echo
@@ -97,7 +101,7 @@ for REPO in $REPO_NAMES; do
                 read -p "Should i commit and push changes? [y/n]" -n 1 -r; echo
 
                 if [[ $REPLY =~ ^[Yy]$ ]]; then
-                    git_commit_and_push
+                    git_commit_and_push "$COMMIT_MSG" $DRY_RUN
                 else
                     git stash
                 fi

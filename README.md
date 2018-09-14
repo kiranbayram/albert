@@ -18,10 +18,11 @@
 ### Replace text
 - Replaces some text and pushes that to master if requested in all repositories. 
 - Meta variable REPO can be used for repository name.
-- **Usage:** ```albert replace-text [ -s | -y ] file "search_string" "new_text" "commit_message"```
+- **Usage:** ```albert replace-text [ -s | -y | -d ] file "search_string" "new_text" "commit_message"```
 - **Example:** ```albert replace-text Jenkinsfile "input 'Continue?'" "timeout(time: 1, unit: 'HOURS') { input 'Continue?' }" "Add timeout for Jenkins approval stages"```
 - **-s** : Execute 'sbt clean test' for every repo which is changed
 - **-y** : Execute 'yarn install && gulp test' for every repo which is changed
+- **-d** : Dry run, changes aren't committed and pushed
 #### Operation workflow
 - Albert does the change and shows git diff
 - User can review

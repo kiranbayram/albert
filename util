@@ -31,9 +31,16 @@ git_refresh(){
 
 git_commit_and_push(){
     COMMIT_MSG="$1"
-    git add -A
-    git commit -m "$COMMIT_MSG"
-    git push
+    DRY_RUN="$2"
+
+    if [[ $DRY_RUN == 0 ]]; then
+        git add -A
+        git commit -m "$COMMIT_MSG"
+        git push
+    else
+        git stash >> /dev/null
+        echo "Would have committed with message '$COMMIT_MSG' and pushed it to master!"
+    fi
 }
 
 aws_login () { 
