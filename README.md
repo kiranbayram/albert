@@ -7,6 +7,10 @@
 - **Usage:** ```./setup "github team name"```
 - **Example:** ```./setup "ConMon"```
 
+### Github access token
+- You need to set environment variable ACCESS_TOKEN to a Github access token or store it in ~/.github_token
+- Go to https://github.com/settings/tokens to create one.
+
 ## Operations
 ### Help
 - Prints all available operations and their usage messages.

@@ -23,8 +23,6 @@ for REPO in $REPO_NAMES; do
 		cd $REPO
 	fi
 
-	echo "$COMMAND"
-
     eval "${COMMAND//REPO/$REPO}"
 
 	cd ~/git
