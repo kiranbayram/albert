@@ -13,10 +13,23 @@ brew install jq
 MY_DIR="$(dirname "$0")"
 $MY_DIR/set-team "$1"
 
+# TODO: Refactor the duplications below to a util function
 grep -q "alias albert" ~/.bash_profile 2> /dev/null
 if [ $? -ne 0 ]; then
     printf "\nsource ~/git/albert/bash_completion\n" >> ~/.bash_profile
     printf "alias albert=\"~/git/albert/albert\"\n" >> ~/.bash_profile
+fi
+
+grep -q "alias albert" ~/.zshrc 2> /dev/null
+if [ $? -ne 0 ]; then
+    printf "\nsource ~/git/albert/bash_completion\n" >> ~/.zshrc
+    printf "alias albert=\"~/git/albert/albert\"\n" >> ~/.zshrc
+fi
+
+grep -q "alias albert" ~/.bashrc 2> /dev/null
+if [ $? -ne 0 ]; then
+    printf "\nsource ~/git/albert/bash_completion\n" >> ~/.bashrc
+    printf "alias albert=\"~/git/albert/albert\"\n" >> ~/.bashrc
 fi
 
 exit 0

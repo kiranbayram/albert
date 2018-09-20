@@ -52,7 +52,6 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - **Usage:** ```albert set-team "github team name"```
 - **Example:** ```albert set-team "ConMon"```
 
-
 ### Clone all repositories
 - Clones all repositories owned by the team under ~/git folder.
 - **Usage:** ```albert clone-all-repos```
