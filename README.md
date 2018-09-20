@@ -1,5 +1,8 @@
 #### Albert is a collection of commands to make it easier to work with several repos
 
+It's tailor-made for MacOS at the moment, it won't work on other operating systems.
+**Assumptions made by Albert:** brew and git is already installed.
+
 ## Setup
 - Setup script must be executed as shown below.
 - It installs necessary tools, add some configuration to .bash_profile and sets up github team id which is needed for all operations.
