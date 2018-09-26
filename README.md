@@ -44,7 +44,7 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - **Example:** ```albert execute "echo REPO > repo-name.txt"```
 
 ### Merge AMI pull requests
-- Merges AMI pull requests in all repositories where such PR exists.
+- Merges most recent AMI PR and closes other older AMI PRs in all repositories.
 - **Usage:** ```albert merge-ami-prs```
 
 ### Set team

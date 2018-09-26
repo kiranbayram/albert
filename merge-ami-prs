@@ -36,6 +36,7 @@ for REPO in $REPO_NAMES; do
 
     PR_COUNT=`echo "$PULL_REQUESTS" | jq "length"`
 
+    # TODO: Get rid of duplication in both if and elif cases
     if [[ $PR_COUNT -eq 1 ]]; then
         PR_TITLE=`echo "$PULL_REQUESTS" | jq ".[0].title"`
         PR_NUMBER=`echo "$PULL_REQUESTS" | jq ".[0].number"`
@@ -45,8 +46,24 @@ for REPO in $REPO_NAMES; do
 
         merge_pr $PR_NUMBER
     elif [[ $PR_COUNT -gt 1 ]]; then
-        echo "$(tput bold)$REPO$(tput sgr0)"
-        echo -e "$(tput bold)$(tput setaf 1)More than 1 PR open; cannot automatically merge$(tput sgr0)\n"
+        PR_TITLE=`echo "$PULL_REQUESTS" | jq ".[0].title"`
+        PR_NUMBER=`echo "$PULL_REQUESTS" | jq ".[0].number"`
+
+        echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
+        echo -e "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
+
+        merge_pr $PR_NUMBER
+
+        echo -e "$(tput bold)$(tput setaf 1)More than 1 PR open; will remove other PRs $(tput sgr0)"
+
+        PR_NUMBERS_TO_REMOVE=`echo "$PULL_REQUESTS" | jq ".[1:$PR_COUNT]" | jq ".[].number"`
+
+        for PR_NUMBER_TO_REMOVE in $PR_NUMBERS_TO_REMOVE; do
+            echo "$(tput bold)Removing PR with number $PR_NUMBER_TO_REMOVE in $REPO $(tput sgr0)"
+            http PATCH "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER_TO_REMOVE?access_token=$ACCESS_TOKEN" state=closed 1> /dev/null 
+        done;
+        echo
+ 
     else
         echo -e "$(tput bold)$REPO$(tput sgr0): no PR found\n"
     fi
