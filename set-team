@@ -1,4 +1,5 @@
 #!/bin/bash
+
 USAGE="Sets or changes github team id which is needed for all operations.\n"
 USAGE+="Usage: albert $(basename "$0") \"github team name\"\n"
 USAGE+="Example: albert $(basename "$0") \"ConMon\""
