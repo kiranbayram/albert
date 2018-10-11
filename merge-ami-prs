@@ -11,43 +11,43 @@ check_access_token
 
 REPO_NAMES=$(get_repos)
 
-echo -e "Merging AMI pull request in `echo "$REPO_NAMES" | wc -l` repositories\n"
+echo -e "Merging AMI pull request in $(echo "$REPO_NAMES" | wc -l) repositories\n"
 
 merge_pr() {
     PR_NUMBER=$1
 
     echo -n "Merging PR $PR_NUMBER... "
 
-    RESULT=`http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=rebase`
+    RESULT=$(http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=rebase)
 
-    MERGED=`echo "$RESULT" | jq ".merged"`
+    MERGED=$(echo "$RESULT" | jq ".merged")
 
     if [[ "$MERGED" == "true" ]]; then
         echo -e "$(tput setaf 2)merged$(tput sgr0)\n"
     else
-        MESSAGE=`echo "$RESULT" | jq ".message"`
+        MESSAGE=$(echo "$RESULT" | jq ".message")
         echo -e "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)\n"
     fi
 
 }
 
 for REPO in $REPO_NAMES; do
-    PULL_REQUESTS=`http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"AMI is updated\")))"`
+    PULL_REQUESTS=$(http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"AMI is updated\")))")
 
-    PR_COUNT=`echo "$PULL_REQUESTS" | jq "length"`
+    PR_COUNT=$(echo "$PULL_REQUESTS" | jq "length")
 
     # TODO: Get rid of duplication in both if and elif cases
     if [[ $PR_COUNT -eq 1 ]]; then
-        PR_TITLE=`echo "$PULL_REQUESTS" | jq ".[0].title"`
-        PR_NUMBER=`echo "$PULL_REQUESTS" | jq ".[0].number"`
+        PR_TITLE=$(echo "$PULL_REQUESTS" | jq ".[0].title")
+        PR_NUMBER=$(echo "$PULL_REQUESTS" | jq ".[0].number")
 
         echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
         echo -e "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
 
         merge_pr $PR_NUMBER
     elif [[ $PR_COUNT -gt 1 ]]; then
-        PR_TITLE=`echo "$PULL_REQUESTS" | jq ".[0].title"`
-        PR_NUMBER=`echo "$PULL_REQUESTS" | jq ".[0].number"`
+        PR_TITLE=$(echo "$PULL_REQUESTS" | jq ".[0].title")
+        PR_NUMBER=$(echo "$PULL_REQUESTS" | jq ".[0].number")
 
         echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
         echo -e "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
@@ -56,14 +56,14 @@ for REPO in $REPO_NAMES; do
 
         echo -e "$(tput bold)$(tput setaf 1)More than 1 PR open; will remove other PRs $(tput sgr0)"
 
-        PR_NUMBERS_TO_REMOVE=`echo "$PULL_REQUESTS" | jq ".[1:$PR_COUNT]" | jq ".[].number"`
+        PR_NUMBERS_TO_REMOVE=$(echo "$PULL_REQUESTS" | jq ".[1:$PR_COUNT]" | jq ".[].number")
 
         for PR_NUMBER_TO_REMOVE in $PR_NUMBERS_TO_REMOVE; do
             echo "$(tput bold)Removing PR with number $PR_NUMBER_TO_REMOVE in $REPO $(tput sgr0)"
-            http PATCH "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER_TO_REMOVE?access_token=$ACCESS_TOKEN" state=closed 1> /dev/null 
+            http PATCH "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER_TO_REMOVE?access_token=$ACCESS_TOKEN" state=closed 1> /dev/null
         done;
         echo
- 
+
     else
         echo -e "$(tput bold)$REPO$(tput sgr0): no PR found\n"
     fi
