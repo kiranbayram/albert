@@ -3,8 +3,8 @@
 MY_DIR="$(dirname "$0")"
 
 check_access_token(){
-    if [[ "$ACCESS_TOKEN" == "" && -f ~/.github_token ]]; then
-        ACCESS_TOKEN=$(cat ~/.github_token)
+    if [[ "$ACCESS_TOKEN" == "" && -f "$HOME/.github_token" ]]; then
+        ACCESS_TOKEN=$(cat "$HOME/.github_token")
     fi
 
     if [[ "$ACCESS_TOKEN" == "" ]]; then
@@ -14,7 +14,7 @@ check_access_token(){
 }
 
 get_repos(){
-    TEAM_ID=$(cat $MY_DIR/team-id.albert.txt)
+    TEAM_ID=$(cat "$MY_DIR/team-id.albert.txt")
 
     # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
     REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"

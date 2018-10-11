@@ -17,15 +17,15 @@ REPO_NAMES=$(get_repos)
 
 for REPO in $REPO_NAMES; do
 	echo "$(tput bold)=====$REPO=====$(tput sgr0)"
-	cd ~/git/$REPO
+	cd "$HOME/git/$REPO"
 	if [ $? -ne 0 ]; then
 		git clone git@github.com:Scout24/$REPO.git
-		cd $REPO
+		cd "$REPO"
 	fi
 
     eval "${COMMAND//REPO/$REPO}"
 
-	cd ~/git
+	cd "$HOME/git"
 
     continue
 done;

@@ -12,9 +12,9 @@ check_access_token
 REPO_NAMES=$(get_repos)
 for REPO in $REPO_NAMES; do
 
-    echo $REPO
+    echo "$REPO"
 
-    cd ~/git
+    cd "$HOME/git"
 
     git clone git@github.com:Scout24/$REPO.git
 done;
