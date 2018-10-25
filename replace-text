@@ -70,7 +70,7 @@ for REPO in $REPO_NAMES; do
         LOCAL_NEW_TEXT="${NEW_TEXT//REPO/$REPO}"
         replace_text "$LOCAL_SEARCH_TEXT" "$LOCAL_NEW_TEXT"
 
-        if [[ $SBT == 1 ]]; then
+        if [[ $SBT == 1 ]] && [ -f build.sbt ]; then
             aws_login as24dev PowerUserAccess
             if [ -f ./sbt ]; then
                 ./sbt clean test
@@ -79,9 +79,8 @@ for REPO in $REPO_NAMES; do
             fi
         fi
 
-        if [[ $YARN == 1 ]]; then
+        if [[ $YARN == 1 ]] && [ -f package.json ]; then
             yarn install
-            gulp test
         fi
 
         git diff
