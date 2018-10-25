@@ -17,7 +17,7 @@ get_repos(){
     TEAM_ID=$(cat "$MY_DIR/team-id.albert.txt")
 
     # filter out repos our team is not admin of; otherwise, e.g. security-configuration would appear in the list as of now (2017-12)
-    REPO_NAME_FILTER="map(select(.permissions.admin == true)) | map(.name) | .[]"
+    REPO_NAME_FILTER="map(select((.permissions.admin == true) and (.archived == false))) | map(.name) | .[]"
 
     http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort
 }
