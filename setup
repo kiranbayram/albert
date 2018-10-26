@@ -13,6 +13,15 @@ brew install jq
 MY_DIR="$(dirname "$0")"
 "$MY_DIR/set-team" "$1"
 
+read -p "Please enter root directory where you keep your git repos:"
+
+if [[ "$REPLY" == "" ]]; then
+    echo "Empty slug is not accepted. Please use correct team name or slug."
+    exit 1
+fi
+
+echo "$REPLY" > "$MY_DIR/root-dir.albert.txt"
+
 # TODO: Refactor the duplications below to a util function
 grep -q "alias albert" "$HOME/.bash_profile" 2> /dev/null
 if [ $? -ne 0 ]; then

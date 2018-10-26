@@ -1,6 +1,7 @@
 #!/bin/bash
 
 MY_DIR="$(dirname "$0")"
+ROOT_DIR=$(cat root-dir.albert.txt)
 
 check_access_token(){
     if [[ "$ACCESS_TOKEN" == "" && -f "$HOME/.github_token" ]]; then
