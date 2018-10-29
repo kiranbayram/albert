@@ -8,6 +8,7 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - Setup script must be executed as shown below.
 - It installs necessary tools, add some configuration to .bash_profile and sets up github team id which is needed for all operations.
 - Open a new terminal after setup is done, so that changes to .bash_profile are loaded.
+- It also asks for root directory where you have your git repos.
 - **Usage:** ```./setup "github team name"```
 - **Example:** ```./setup "ConMon"```
 

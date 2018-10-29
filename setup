@@ -13,14 +13,22 @@ brew install jq
 MY_DIR="$(dirname "$0")"
 "$MY_DIR/set-team" "$1"
 
-read -p "Please enter root directory where you keep your git repos:"
+INPUT_VALID=false
 
-if [[ "$REPLY" == "" ]]; then
-    echo "Empty slug is not accepted. Please use correct team name or slug."
-    exit 1
-fi
+until [ "$INPUT_VALID" = true ]
+do
+    read -p "Please enter root directory where you keep your git repos or where you want Albert to work in:"
 
-echo "$REPLY" > "$MY_DIR/root-dir.albert.txt"
+    eval INPUT=$REPLY   # We do this to replace special characters like '~'
+
+    if [[ "$INPUT" != "" ]] && [ -d $INPUT ]; then
+        echo "$INPUT" > "$MY_DIR/root-dir.albert.txt"
+        INPUT_VALID=true
+    fi
+
+    [ "$INPUT_VALID" = false ] && echo "Given path is invalid. Please try again."
+done
+
 
 # TODO: Refactor the duplications below to a util function
 grep -q "alias albert" "$HOME/.bash_profile" 2> /dev/null

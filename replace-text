@@ -57,7 +57,7 @@ REPO_NAMES=$(get_repos)
 
 for REPO in $REPO_NAMES; do
 	echo "$(tput bold)=====$REPO=====$(tput sgr0)"
-    cd "$HOME/git"
+    cd "$ROOT_DIR"
 	[ -d "$REPO" ] || git clone git@github.com:Scout24/$REPO.git
     cd "$REPO"
 
