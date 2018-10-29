@@ -47,3 +47,7 @@ git_commit_and_push(){
 aws_login () {
     eval "$(scloud account login -e "$1" "$2")"
 }
+
+root_dir_not_found(){
+    echo "Root directory not found, exiting." && exit 1
+}
