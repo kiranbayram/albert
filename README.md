@@ -24,6 +24,10 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - Lists all repos owned by the team.
 - **Usage:** ```albert list-repos```
 
+### List pull requests
+- Lists all open PRs.
+- **Usage:** ```albert list-prs```
+
 ### Replace text
 - Replaces some text and pushes that to master if requested in all repositories. 
 - Meta variable REPO can be used for repository name.
