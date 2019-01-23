@@ -9,6 +9,9 @@ help(){
 	echo -e "$(tput bold)\nlist-repos$(tput sgr0)"
 	$MY_DIR/list-repos help
 
+	echo -e "$(tput bold)\nlist-prs$(tput sgr0)"
+	$MY_DIR/list-prs help
+
 	echo -e "$(tput bold)\nmerge-ami-prs$(tput sgr0)"
 	$MY_DIR/merge-ami-prs "help"
 
@@ -37,6 +40,8 @@ elif [[ "$COMMAND" == "execute" ]]; then
 	$MY_DIR/execute "$@"
 elif [[ "$COMMAND" == "clone-all-repos" ]]; then
 	$MY_DIR/clone-all-repos "$@"
+elif [[ "$COMMAND" == "list-prs" ]]; then
+	$MY_DIR/list-prs "$@"
 elif [[ "$COMMAND" == "help" ]]; then
 	help
 else

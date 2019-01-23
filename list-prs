@@ -1,0 +1,33 @@
+#!/bin/bash
+USAGE="Lists open pull requests for all repositories.\n"
+USAGE+="Usage: albert list-prs"
+
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
+
+MY_DIR="$(dirname "$0")"
+source "$MY_DIR/util"
+
+check_access_token
+
+REPO_NAMES=$(get_repos)
+
+for REPO in $REPO_NAMES; do
+    
+    PULL_REQUESTS=$(http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title))")
+
+    PR_COUNT=$(echo "$PULL_REQUESTS" | jq "length")
+
+    if [[ $PR_COUNT -gt 0 ]]; then
+        echo "$(tput bold)$(tput setaf 3)PRs in $REPO$(tput sgr0)"
+
+        echo -en "$(tput bold)"
+
+        echo "$PULL_REQUESTS" | 
+        jq -r ".[0:$PR_COUNT] | .[] | (.title + \"\t\" + .html_url + \"\t\" + .user.login)" | 
+        column -t -s $'\t' | gsed 's/^/  /'
+
+        echo -en "$(tput sgr0)"
+        echo
+    fi
+
+done;
