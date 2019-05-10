@@ -1,0 +1,28 @@
+#!/bin/bash
+USAGE="Removes archived repos from local project folder\n"
+USAGE+="Usage: albert $(basename "$0")\n"
+
+# ([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
+# [[ $# != 1 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
+
+MY_DIR="$(dirname "$0")"
+source "$MY_DIR/util"
+
+check_access_token
+
+REPO_NAMES=$(get_archived_repos)
+
+for REPO in $REPO_NAMES; do
+
+	cd "$ROOT_DIR" || root_dir_not_found
+
+	cd "$ROOT_DIR/$REPO" 2>/dev/null
+	if [ $? -eq 0 ]; then
+		echo "$(tput bold)=====$REPO is archived, I'll remove it from local=====$(tput sgr0)"
+		cd "$ROOT_DIR"
+		# TODO: prompt for confirmation
+		echo "rm -rf $REPO"
+	fi
+
+    continue
+done;
