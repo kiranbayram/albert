@@ -20,8 +20,11 @@ for REPO in $REPO_NAMES; do
 	if [ $? -eq 0 ]; then
 		echo "$(tput bold)=====$REPO is archived, I'll remove it from local=====$(tput sgr0)"
 		cd "$ROOT_DIR"
-		# TODO: prompt for confirmation
-		echo "rm -rf $REPO"
+
+		read -p "do you approve? [y/n] " -n 1 -r; echo
+		if [[ $REPLY =~ ^[Yy]$ ]]; then
+			rm -rf "$REPO"
+		fi
 	fi
 
     continue
