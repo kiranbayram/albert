@@ -26,9 +26,6 @@ help(){
 
 	echo -e "$(tput bold)\nclone-all-repos$(tput sgr0)"
 	$MY_DIR/clone-all-repos "help"
-
-	echo -e "$(tput bold)\nremove-archived-repos$(tput sgr0)"
-	$MY_DIR/remove-archived-repos "help"
 }
 
 if [[ "$COMMAND" == "list-repos" ]]; then
@@ -45,11 +42,9 @@ elif [[ "$COMMAND" == "clone-all-repos" ]]; then
 	$MY_DIR/clone-all-repos "$@"
 elif [[ "$COMMAND" == "list-prs" ]]; then
 	$MY_DIR/list-prs "$@"
-elif [[ "$COMMAND" == "remove-archived-repos" ]]; then
-	$MY_DIR/remove-archived-repos "$@"
 elif [[ "$COMMAND" == "help" ]]; then
 	help
 else
-	echo -e "Valid operations:\nhelp\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos\nremove-archived-repos"
+	echo -e "Valid operations:\nhelp\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos"
 	exit 1
 fi

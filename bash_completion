@@ -9,7 +9,7 @@ _albert()
 
     case ${COMP_CWORD} in
         1)
-            COMPREPLY=($(compgen -W "clone-all-repos help merge-ami-prs replace-text set-team list-repos execute list-prs remove-archived-repos" -- ${cur}))
+            COMPREPLY=($(compgen -W "clone-all-repos help merge-ami-prs replace-text set-team list-repos execute list-prs" -- ${cur}))
             ;;
         *)
             COMPREPLY=()

@@ -23,15 +23,6 @@ get_repos(){
     http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort
 }
 
-# TODO: this is almost same as get_repos
-get_archived_repos(){
-    TEAM_ID=$(cat "$MY_DIR/team-id.albert.txt")
-
-    REPO_NAME_FILTER="map(select((.permissions.admin == true) and (.archived == true))) | map(.name) | .[]"
-
-    http GET "https://api.github.com/teams/$TEAM_ID/repos?per_page=100&access_token=$ACCESS_TOKEN" | jq -r "$REPO_NAME_FILTER" | sort
-}
-
 # TODO: Make this function safer, so that we don't accidentally cause people to lose changes
 git_refresh(){
     git stash
