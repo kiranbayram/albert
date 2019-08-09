@@ -53,6 +53,28 @@ git_commit_and_push(){
     fi
 }
 
+git_commit_and_create_pr(){
+    COMMIT_MSG="$1"
+    PR_TITLE="$2"
+    REPO="$3"
+    DRY_RUN="$4"
+
+
+    if [[ $DRY_RUN == 0 ]]; then
+        git chb wip/albert
+        git reseth master
+        git push
+        git add -A
+        git commit -m "$COMMIT_MSG"
+
+        curl -d '{"title": "$PR_TITLE","body": "Please pull this in!","head": "wip/albert","base": "master"}' -X POST https://api.github.com/repos/Scout24/$REPO/pulls?access_token=$ACCESS_TOKEN
+
+    else
+        git stash >> /dev/null
+        echo "Would have created PR with message '$PR_TITLE'!"
+    fi
+}
+
 aws_login () {
     eval "$(scloud account login -e "$1" "$2")"
 }
