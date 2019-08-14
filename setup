@@ -39,9 +39,13 @@ fi
 
 grep -q "alias albert" ~/.zshrc 2> /dev/null
 if [ $? -ne 0 ]; then
-    printf "\nsource ~/git/albert/bash_completion\n" >> "$HOME/.zshrc"
+    printf "\nautoload bashcompinit\n" >> "$HOME/.zshrc"
+    printf "bashcompinit\n" >> "$HOME/.zshrc"
+    printf "source ~/git/albert/bash_completion\n" >> "$HOME/.zshrc"
     printf "alias albert=\"~/git/albert/albert\"\n" >> "$HOME/.zshrc"
 fi
+
+
 
 grep -q "alias albert" ~/.bashrc 2> /dev/null
 if [ $? -ne 0 ]; then
