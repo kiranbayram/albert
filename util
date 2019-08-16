@@ -60,6 +60,7 @@ git_commit_and_create_pr(){
 
     if [[ $DRY_RUN == 0 ]]; then
         git branch -D wip/albert
+        git push origin --delete wip/albert
         git checkout -b wip/albert
         git add -A
         git commit -m "$COMMIT_MSG"
@@ -69,7 +70,9 @@ git_commit_and_create_pr(){
                   --arg msg "$COMMIT_MSG" \
                   '{title: $msg, body: $msg, head: "wip/albert", base: "master"}' )
         
-        curl -d $JSON -X POST https://api.github.com/repos/Scout24/$REPO/pulls?access_token=$ACCESS_TOKEN
+        curl -d "$JSON" -X POST https://api.github.com/repos/Scout24/$REPO/pulls?access_token=$ACCESS_TOKEN
+
+        git checkout master
     else
         git stash >> /dev/null
         echo "Would have created PR with message '$COMMIT_MSG'!"
