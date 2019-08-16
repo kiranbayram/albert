@@ -62,3 +62,7 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - Clones all repositories owned by the team under configured ROOT folder.
 - **Usage:** ```albert clone-all-repos```
 
+### Remove archived repositories
+- Removes archived repos from configured ROOT folder.
+- **Usage:** ```albert remove-archived-repos```
+
