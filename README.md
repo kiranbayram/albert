@@ -29,7 +29,7 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - **Usage:** ```albert list-prs```
 
 ### Replace text
-- Replaces some text and pushes that to master if requested in all repositories. 
+- Replaces some text and creates a PR. 
 - Meta variable REPO can be used for repository name.
 - **Usage:** ```albert replace-text [ -s | -y | -d ] file "search_string" "new_text" "commit_message"```
 - **Example:** ```albert replace-text Jenkinsfile "input 'Continue?'" "timeout(time: 1, unit: 'HOURS') { input 'Continue?' }" "Add timeout for Jenkins approval stages"```
