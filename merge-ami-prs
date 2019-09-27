@@ -18,7 +18,7 @@ merge_pr() {
 
     echo -n "Merging PR $PR_NUMBER... "
 
-    RESULT=$(http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=rebase)
+    RESULT=$(http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=merge)
 
     MERGED=$(echo "$RESULT" | jq ".merged")
 
