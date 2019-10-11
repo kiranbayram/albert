@@ -13,6 +13,12 @@ check_access_token
 
 GIVEN_NAME="${2:-$1}"
 
+# hack for engagement and retention teams since fetching teams doesn't work for that team
+if [[ "$GIVEN_NAME" == "eng-ret-web" ]]; then
+    echo 2827483 > "$MY_DIR/team-id.albert.txt"
+    exit 0
+fi
+
 TEAM_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id)"
 TEAM_ID_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id) | .[1]"
 
