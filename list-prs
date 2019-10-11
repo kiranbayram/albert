@@ -23,7 +23,7 @@ for REPO in $REPO_NAMES; do
         echo -en "$(tput bold)"
 
         echo "$PULL_REQUESTS" | 
-        jq -r ".[0:$PR_COUNT] | .[] | (.title + \"\t\" + .html_url + \"\t\" + .user.login)" | 
+        jq -r ".[0:$PR_COUNT] | .[] | (.title + \"\t\" + .html_url + \"\t\" + .user.login + \"\t\" + .created_at)" | 
         column -t -s $'\t' | gsed 's/^/  /'
 
         echo -en "$(tput sgr0)"
