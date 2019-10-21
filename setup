@@ -10,7 +10,7 @@ brew install gnu-sed
 brew install httpie
 brew install jq
 
-MY_DIR="$(dirname "$0")"
+MY_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 "$MY_DIR/set-team" "$1"
 
 INPUT_VALID=false
@@ -33,24 +33,24 @@ done
 # TODO: Refactor the duplications below to a util function
 grep -q "alias albert" "$HOME/.bash_profile" 2> /dev/null
 if [ $? -ne 0 ]; then
-    printf "\nsource ~/git/albert/bash_completion\n" >> "$HOME/.bash_profile"
-    printf "alias albert=\"~/git/albert/albert\"\n" >> "$HOME/.bash_profile"
+    printf "\nsource $MY_DIR/bash_completion\n" >> "$HOME/.bash_profile"
+    printf "alias albert=\"$MY_DIR/albert\"\n" >> "$HOME/.bash_profile"
 fi
 
 grep -q "alias albert" ~/.zshrc 2> /dev/null
 if [ $? -ne 0 ]; then
     printf "\nautoload bashcompinit\n" >> "$HOME/.zshrc"
     printf "bashcompinit\n" >> "$HOME/.zshrc"
-    printf "source ~/git/albert/bash_completion\n" >> "$HOME/.zshrc"
-    printf "alias albert=\"~/git/albert/albert\"\n" >> "$HOME/.zshrc"
+    printf "source $MY_DIR/bash_completion\n" >> "$HOME/.zshrc"
+    printf "alias albert=\"$MY_DIR/albert\"\n" >> "$HOME/.zshrc"
 fi
 
 
 
 grep -q "alias albert" ~/.bashrc 2> /dev/null
 if [ $? -ne 0 ]; then
-    printf "\nsource ~/git/albert/bash_completion\n" >> "$HOME/.bashrc"
-    printf "alias albert=\"~/git/albert/albert\"\n" >> "$HOME/.bashrc"
+    printf "\nsource $MY_DIR/bash_completion\n" >> "$HOME/.bashrc"
+    printf "alias albert=\"$MY_DIR/albert\"\n" >> "$HOME/.bashrc"
 fi
 
 exit 0
