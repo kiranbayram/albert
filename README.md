@@ -7,7 +7,7 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 ## Setup
 - Setup script must be executed as shown below.
 - It installs necessary tools, add some configuration to .bash_profile and sets up github team id which is needed for all operations.
-- Open a new terminal after setup is done, so that changes to .bash_profile are loaded.
+- **OPEN A NEW TERMINAL AFTER SETUP IS DONE**, so that changes to .bash_profile/.bashrc/.zshrc are loaded.
 - It also asks for root directory where you have your git repos.
 - **Usage:** ```./setup "github team name"```
 - **Example(use this for [eng ret web team](https://github.com/orgs/Scout24/teams/as24-cxp-engagement-retention-web)):** ```./setup "eng-ret-web"```
