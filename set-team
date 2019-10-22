@@ -27,6 +27,7 @@ for i in 1 2 3 4 5 6 7 8 9; do
     TEAM_ID=$(http GET "https://api.github.com/orgs/Scout24/teams?page=$i&per_page=30&access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER")
 
     if [[ "$TEAM_NAME" == "" ]] || [[ "$TEAM_NAME" == null ]]; then
+        echo "Searching, please wait!"
         continue
     else
         echo -e "Found team name and id: $TEAM_NAME\n"
@@ -55,6 +56,7 @@ for i in 1 2 3 4 5; do
     TEAM_ID=$(http GET "https://api.github.com/orgs/Scout24/teams?page=$i&per_page=100&access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER")
 
     if [[ "$TEAM_ID" == "" ]] || [[ "$TEAM_ID" == null ]]; then
+        echo "Searching, please wait!"
         continue
     else
         echo $TEAM_ID > "$MY_DIR/team-id.albert.txt"
