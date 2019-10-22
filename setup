@@ -17,7 +17,7 @@ INPUT_VALID=false
 
 until [ "$INPUT_VALID" = true ]
 do
-    read -p "Please enter root directory where you keep your git repos or where you want Albert to work in:"
+    read -p "Please enter the directory where you keep your github repos (common cases are ~/git or ~/github or ~/dev):"
 
     eval INPUT=$REPLY   # We do this to replace special characters like '~'
 
@@ -29,12 +29,14 @@ do
     [ "$INPUT_VALID" = false ] && echo "Given path is invalid. Please try again."
 done
 
-
 # TODO: Refactor the duplications below to a util function
 grep -q "alias albert" "$HOME/.bash_profile" 2> /dev/null
 if [ $? -ne 0 ]; then
     printf "\nsource $MY_DIR/bash_completion\n" >> "$HOME/.bash_profile"
     printf "alias albert=\"$MY_DIR/albert\"\n" >> "$HOME/.bash_profile"
+    echo "Added albert alias/conf to .bash_profile"
+else
+    echo "Skipping .bash_profile because albert alias already exists there"
 fi
 
 grep -q "alias albert" ~/.zshrc 2> /dev/null
@@ -43,14 +45,18 @@ if [ $? -ne 0 ]; then
     printf "bashcompinit\n" >> "$HOME/.zshrc"
     printf "source $MY_DIR/bash_completion\n" >> "$HOME/.zshrc"
     printf "alias albert=\"$MY_DIR/albert\"\n" >> "$HOME/.zshrc"
+    echo "Added albert alias/conf to .zshrc"
+else
+    echo "Skipping .zshrc because albert alias already exists there"
 fi
-
-
 
 grep -q "alias albert" ~/.bashrc 2> /dev/null
 if [ $? -ne 0 ]; then
     printf "\nsource $MY_DIR/bash_completion\n" >> "$HOME/.bashrc"
     printf "alias albert=\"$MY_DIR/albert\"\n" >> "$HOME/.bashrc"
+    echo "Added albert alias/conf to .bashrc"
+else
+    echo "Skipping .bashrc because albert alias already exists there"
 fi
 
 exit 0
