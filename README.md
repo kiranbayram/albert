@@ -33,14 +33,14 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - Replaces some text and creates a PR. 
 - Meta variable REPO can be used for repository name.
 - **Usage:** ```albert replace-text [ -s | -y | -d ] file "search_string" "new_text" "commit_message"```
-- **Example:** ```albert replace-text Jenkinsfile "input 'Continue?'" "timeout(time: 1, unit: 'HOURS') { input 'Continue?' }" "Add timeout for Jenkins approval stages"```
+- **Example:** ```albert replace-text Jenkinsfile "as24-fizz-community-library@v0.10.0" "as24-fizz-community-library@v0.10.1" "Update as24-fizz-community-library version"```
 - **-s** : Execute 'sbt clean test' for every repo which is changed
 - **-y** : Execute 'yarn install && gulp test' for every repo which is changed
-- **-d** : Dry run, changes aren't committed and pushed
+- **-d** : Dry run, changes aren't committed
 #### Operation workflow
 - Albert does the change and shows git diff
 - User can review
-- User can confirm - If confirmed, albert commits and pushes it to master branch
+- User can confirm - If confirmed, albert commits to `wip/albert` branch and opens a PR
 - User can skip
 - User can reject change and ask for vim to do the change on the fly
 
