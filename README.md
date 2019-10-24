@@ -67,3 +67,8 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - Removes archived repos from configured ROOT folder.
 - **Usage:** ```albert remove-archived-repos```
 
+
+### Merge pull requests with matching text
+- Merges all (most recent) PRs whose title contains the given text and closes other older matching PRs.
+- **Usage:** ```albert merge-prs "Bump s24-base"```
+

@@ -1,20 +1,23 @@
 #!/bin/bash
-USAGE="Merges AMI pull requests in all repositories where such PR exists.\n"
-USAGE+="Usage: albert merge-ami-prs"
+USAGE="Merges all pull requests whose title contains the given text\n"
+USAGE+="Usage: albert merge-prs \"Bump s24-base\""
 
 ([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
+[[ $# != 2 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
+
+SEARCH_TEXT="$2"
 
 check_access_token
 
 REPO_NAMES=$(get_repos)
 
-echo -e "Merging AMI pull request in $(echo "$REPO_NAMES" | wc -l) repositories\n"
+echo -e "Merging  pull requests in $(echo "$REPO_NAMES" | wc -l) repositories\n"
 
 for REPO in $REPO_NAMES; do
-    PULL_REQUESTS=$(http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"AMI is updated\")))")
+    PULL_REQUESTS=$(http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"$SEARCH_TEXT\")))")
 
     PR_COUNT=$(echo "$PULL_REQUESTS" | jq "length")
 
@@ -23,15 +26,15 @@ for REPO in $REPO_NAMES; do
         PR_TITLE=$(echo "$PULL_REQUESTS" | jq ".[0].title")
         PR_NUMBER=$(echo "$PULL_REQUESTS" | jq ".[0].number")
 
-        echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
+        echo "$(tput bold)$(tput setaf 3)Found a PR with number $PR_NUMBER in $REPO$(tput sgr0)"
         echo -e "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
 
         merge_pr $PR_NUMBER
     elif [[ $PR_COUNT -gt 1 ]]; then
         PR_TITLE=$(echo "$PULL_REQUESTS" | jq ".[0].title")
         PR_NUMBER=$(echo "$PULL_REQUESTS" | jq ".[0].number")
-
-        echo "$(tput bold)$(tput setaf 3)Open AMI PR $PR_NUMBER in $REPO$(tput sgr0)"
+        
+        echo "$(tput bold)$(tput setaf 3)Found a PR with number $PR_NUMBER in $REPO$(tput sgr0)"
         echo -e "Going to merge $(tput bold)$PR_TITLE$(tput sgr0) now"
 
         merge_pr $PR_NUMBER

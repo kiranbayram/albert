@@ -86,3 +86,21 @@ aws_login () {
 root_dir_not_found(){
     echo "Root directory not found, exiting." && exit 1
 }
+
+merge_pr() {
+    PR_NUMBER=$1
+
+    echo -n "Merging PR $PR_NUMBER... "
+
+    RESULT=$(http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=merge)
+
+    MERGED=$(echo "$RESULT" | jq ".merged")
+
+    if [[ "$MERGED" == "true" ]]; then
+        echo -e "$(tput setaf 2)merged$(tput sgr0)\n"
+    else
+        MESSAGE=$(echo "$RESULT" | jq ".message")
+        echo -e "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)\n"
+    fi
+
+}
