@@ -14,7 +14,7 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - **Example:** ```./setup "ConMon"```
 
 ### Github access token
-- You need to set environment variable ACCESS_TOKEN to a Github access token or store it in ~/.github_token
+- You need to create and store a Github access token in ~/.github_token
 - Go to https://github.com/settings/tokens to create one.
 
 ## Operations
