@@ -53,6 +53,21 @@ git_commit_and_push(){
     fi
 }
 
+git_create_label(){
+    REPO="$1"
+    LABEL_NAME="$2"
+    LABEL_DESC="$3"
+    LABEL_COLOR_CODE="$4"
+
+    JSON=$( jq -n \
+                --arg name "$LABEL_NAME" \
+                --arg desc "$LABEL_DESC" \
+                --arg color "$LABEL_COLOR_CODE" \
+                '{name: $name, description: $desc, color: $color}' )
+    
+    curl -d "$JSON" -X POST "https://api.github.com/repos/Scout24/$REPO/labels?access_token=$ACCESS_TOKEN"
+}
+
 git_commit_and_create_pr(){
     COMMIT_MSG="$1"
     REPO="$2"

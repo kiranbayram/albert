@@ -1,0 +1,28 @@
+#!/bin/bash
+USAGE="Creates the defined label in all repos. It doesn't overwrite if label already exists\n"
+USAGE+="Usage: albert create-label label-name \"label description\" color-code\n"
+USAGE+="Example: albert create-label merge \"Pull request can be automatically merged\" 0e8a16"
+
+
+
+([[ "$1" == "help" ]] || [[ "$2" == "help" ]] ) && { echo -e "$USAGE"; exit 0; }
+[[ $# != 4 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
+
+MY_DIR="$(dirname "$0")"
+source "$MY_DIR/util"
+
+check_access_token
+
+LABEL_NAME="$2"
+LABEL_DESC="$3"
+LABEL_COLOR_CODE="$4"
+
+REPO_NAMES=$(get_repos)
+
+for REPO in $REPO_NAMES; do
+	echo "$(tput bold)=====$REPO=====$(tput sgr0)"
+
+    git_create_label "$REPO" "$LABEL_NAME" "$LABEL_DESC" "$LABEL_COLOR_CODE"
+
+    continue
+done;
