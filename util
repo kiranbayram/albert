@@ -85,7 +85,7 @@ git_commit_and_create_pr(){
                   --arg msg "$COMMIT_MSG" \
                   '{title: $msg, body: $msg, head: "wip/albert", base: "master"}' )
         
-        curl -d "$JSON" -X POST https://api.github.com/repos/Scout24/$REPO/pulls?access_token=$ACCESS_TOKEN
+        curl -d "$JSON" -X POST "https://api.github.com/repos/Scout24/$REPO/pulls?access_token=$ACCESS_TOKEN"
 
         git checkout master
     else
@@ -118,4 +118,10 @@ merge_pr() {
         echo -e "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)\n"
     fi
 
+}
+
+total_count_of_commits(){
+	REPO="$1"
+	COUNT=$(http GET "https://api.github.com/repos/Scout24/$REPO/stats/commit_activity?access_token=$ACCESS_TOKEN" | jq ".[].total" | paste -s -d+ - | bc)
+    echo -e "$COUNT - $REPO"
 }
