@@ -1,0 +1,14 @@
+type: "misc"
+owners:
+  - "bayram.kiran@scout24.com"
+product: "tooling"
+id: "albert"
+vertical: "as24"
+availability: false
+confidentiality: "public"
+integrity: false
+exposure:
+  - "non-applicable"
+lifecycle: "maintenance"
+name: "albert"
+description: "Albert is a collection of commands to make it easier to work with several repos"
