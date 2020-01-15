@@ -5,7 +5,7 @@ product: "tooling"
 id: "albert"
 vertical: "as24"
 availability: false
-confidentiality: "public"
+confidentiality: "company-internal"
 integrity: false
 exposure:
   - "non-applicable"
