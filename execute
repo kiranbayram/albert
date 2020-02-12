@@ -8,6 +8,7 @@ USAGE+="Example: albert $(basename "$0") \"echo REPO > repo-name.txt\""
 
 MY_DIR="$(dirname "$0")"
 source "$MY_DIR/util"
+source "$MY_DIR/custom-bash-functions"
 
 check_access_token
 

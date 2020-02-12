@@ -1,0 +1,20 @@
+#!/bin/bash
+
+MY_DIR="$(dirname "$0")"
+ROOT_DIR=$(cat "$MY_DIR/root-dir.albert.txt")
+
+total_count_of_commits(){
+	curl "https://api.github.com/repos/Scout24/$REPO/stats/commit_activity?access_token=$ACCESS_TOKEN" | jq ".[].total" | paste -s -d+ - | bc
+}
+
+create_auto_merge_for_docker(){
+    if [[ ! -e .github/auto-merge.yaml && ! -e .github/auto-merge.yml ]]; then
+        mkdir -p .github
+        cat ~/auto-merge-template-minimal.yml > .github/auto-merge.yml
+        git chb add-auto-merge-conf-2
+        git aa
+        git cm "Add minimal auto-merge config"
+        git pushup
+        hub pull-request
+    fi
+}
