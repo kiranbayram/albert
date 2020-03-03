@@ -4,7 +4,7 @@ MY_DIR="$(dirname "$0")"
 ROOT_DIR=$(cat "$MY_DIR/root-dir.albert.txt")
 
 total_count_of_commits(){
-	curl "https://api.github.com/repos/Scout24/$REPO/stats/commit_activity?access_token=$ACCESS_TOKEN" | jq ".[].total" | paste -s -d+ - | bc
+	curl "https://api.github.com/repos/AutoScout24/$REPO/stats/commit_activity?access_token=$ACCESS_TOKEN" | jq ".[].total" | paste -s -d+ - | bc
 }
 
 create_auto_merge_for_docker(){

@@ -23,7 +23,7 @@ for REPO in $REPO_NAMES; do
 
 	cd "$ROOT_DIR/$REPO"
 	if [ $? -ne 0 ]; then
-		git clone git@github.com:Scout24/$REPO.git
+		git clone git@github.com:AutoScout24/$REPO.git
 		cd "$REPO"
 	fi
 

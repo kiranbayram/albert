@@ -17,7 +17,7 @@ REPO_NAMES=$(get_repos)
 echo -e "Merging  pull requests in $(echo "$REPO_NAMES" | wc -l) repositories\n"
 
 for REPO in $REPO_NAMES; do
-    PULL_REQUESTS=$(http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"$SEARCH_TEXT\")))")
+    PULL_REQUESTS=$(http GET "https://api.github.com/repos/AutoScout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title | test(\"$SEARCH_TEXT\")))")
 
     PR_COUNT=$(echo "$PULL_REQUESTS" | jq "length")
 
@@ -45,7 +45,7 @@ for REPO in $REPO_NAMES; do
 
         for PR_NUMBER_TO_REMOVE in $PR_NUMBERS_TO_REMOVE; do
             echo "$(tput bold)Removing PR with number $PR_NUMBER_TO_REMOVE in $REPO $(tput sgr0)"
-            http PATCH "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER_TO_REMOVE?access_token=$ACCESS_TOKEN" state=closed 1> /dev/null
+            http PATCH "https://api.github.com/repos/AutoScout24/$REPO/pulls/$PR_NUMBER_TO_REMOVE?access_token=$ACCESS_TOKEN" state=closed 1> /dev/null
         done;
         echo
 

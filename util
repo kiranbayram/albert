@@ -65,7 +65,7 @@ git_create_label(){
                 --arg color "$LABEL_COLOR_CODE" \
                 '{name: $name, description: $desc, color: $color}' )
     
-    curl -d "$JSON" -X POST "https://api.github.com/repos/Scout24/$REPO/labels?access_token=$ACCESS_TOKEN"
+    curl -d "$JSON" -X POST "https://api.github.com/repos/AutoScout24/$REPO/labels?access_token=$ACCESS_TOKEN"
 }
 
 git_commit_and_create_pr(){
@@ -85,7 +85,7 @@ git_commit_and_create_pr(){
                   --arg msg "$COMMIT_MSG" \
                   '{title: $msg, body: $msg, head: "wip/albert", base: "master"}' )
         
-        curl -d "$JSON" -X POST "https://api.github.com/repos/Scout24/$REPO/pulls?access_token=$ACCESS_TOKEN"
+        curl -d "$JSON" -X POST "https://api.github.com/repos/AutoScout24/$REPO/pulls?access_token=$ACCESS_TOKEN"
 
         git checkout master
     else
@@ -107,7 +107,7 @@ merge_pr() {
 
     echo -n "Merging PR $PR_NUMBER... "
 
-    RESULT=$(http PUT "https://api.github.com/repos/scout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=merge)
+    RESULT=$(http PUT "https://api.github.com/repos/AutoScout24/$REPO/pulls/$PR_NUMBER/merge?access_token=$ACCESS_TOKEN" merge_method=merge)
 
     MERGED=$(echo "$RESULT" | jq ".merged")
 

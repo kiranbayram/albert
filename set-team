@@ -23,8 +23,8 @@ for i in 1 2 3 4 5 6 7 8 9; do
     TEAM_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id) | .[0]"
     TEAM_ID_FILTER="map(select(.name | contains(\"$GIVEN_NAME\"))) | map(.name, .id) | .[1]"
 
-    TEAM_NAME=$(http GET "https://api.github.com/orgs/Scout24/teams?page=$i&per_page=30&access_token=$ACCESS_TOKEN" | jq "$TEAM_FILTER")
-    TEAM_ID=$(http GET "https://api.github.com/orgs/Scout24/teams?page=$i&per_page=30&access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER")
+    TEAM_NAME=$(http GET "https://api.github.com/orgs/AutoScout24/teams?page=$i&per_page=30&access_token=$ACCESS_TOKEN" | jq "$TEAM_FILTER")
+    TEAM_ID=$(http GET "https://api.github.com/orgs/AutoScout24/teams?page=$i&per_page=30&access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER")
 
     if [[ "$TEAM_NAME" == "" ]] || [[ "$TEAM_NAME" == null ]]; then
         echo "Searching, please wait!"
@@ -44,7 +44,7 @@ for i in 1 2 3 4 5 6 7 8 9; do
 done
 
 echo -e "I couldn't find the team :( \nLet's try another way\n"
-read -p "Please enter team slug (check github team url, for example: github.com/orgs/Scout24/teams/team-slug):"
+read -p "Please enter team slug (check github team url, for example: github.com/orgs/AutoScout24/teams/team-slug):"
 
 if [[ "$REPLY" == "" ]]; then
     echo "Empty slug is not accepted. Please use correct team name or slug."
@@ -53,7 +53,7 @@ fi
 
 for i in 1 2 3 4 5; do
     TEAM_ID_FILTER="map(select(.slug | contains(\"$REPLY\"))) | map(.name, .id) | .[1]"
-    TEAM_ID=$(http GET "https://api.github.com/orgs/Scout24/teams?page=$i&per_page=100&access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER")
+    TEAM_ID=$(http GET "https://api.github.com/orgs/AutoScout24/teams?page=$i&per_page=100&access_token=$ACCESS_TOKEN" | jq "$TEAM_ID_FILTER")
 
     if [[ "$TEAM_ID" == "" ]] || [[ "$TEAM_ID" == null ]]; then
         echo "Searching, please wait!"

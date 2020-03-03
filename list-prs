@@ -13,7 +13,7 @@ REPO_NAMES=$(get_repos)
 
 for REPO in $REPO_NAMES; do
     
-    PULL_REQUESTS=$(http GET "https://api.github.com/repos/scout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title))")
+    PULL_REQUESTS=$(http GET "https://api.github.com/repos/AutoScout24/$REPO/pulls?status=open&access_token=$ACCESS_TOKEN" | jq "map(select(.title))")
 
     PR_COUNT=$(echo "$PULL_REQUESTS" | jq "length")
 
