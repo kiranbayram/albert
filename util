@@ -94,6 +94,31 @@ git_commit_and_create_pr(){
     fi
 }
 
+git_commit_and_create_pr_to_custom_branch(){
+    REPO="$1"
+    BRANCH="$2"
+    COMMIT_MSG="$3"
+    DRY_RUN="$4"
+
+    if [[ $DRY_RUN == 0 ]]; then
+        git checkout -b "$BRANCH" || git checkout "$BRANCH"
+        git add -A
+        git commit -m "$COMMIT_MSG"
+        git push --set-upstream origin "$BRANCH"
+
+        JSON=$( jq -n \
+                  --arg msg "$COMMIT_MSG" \
+                  --arg branch "$BRANCH" \
+                  '{title: $msg, body: $msg, head: $branch, base: "master"}' )
+        
+        curl -d "$JSON" -X POST "https://api.github.com/repos/AutoScout24/$REPO/pulls?access_token=$ACCESS_TOKEN"
+
+        git checkout master
+    else
+        echo "Would have created PR with message '$COMMIT_MSG' and branch '$BRANCH'!"
+    fi
+}
+
 aws_login () {
     eval "$(scloud account login -e "$1" "$2")"
 }

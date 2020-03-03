@@ -1,0 +1,32 @@
+#!/bin/bash
+USAGE="Commit to given branch and open a PR\n"
+USAGE+="Usage: albert $(basename "$0") \"branch_name\" \"commit_message\"\n"
+USAGE+="Example: albert $(basename "$0") \"test_branch\" \"This is a commit message\"\n"
+
+MY_DIR="$(dirname "$0")"
+source "$MY_DIR/util"
+
+[[ $# != 3 ]] && { echo -e "$USAGE"; exit 1; }  # Show usage when argument count is wrong
+
+BRANCH="$2"
+COMMIT_MSG="$3"
+
+check_access_token
+
+REPO_NAMES=$(get_repos)
+
+for REPO in $REPO_NAMES; do
+    if [[ $REPO == "albert" ]]; then
+        continue
+    fi
+
+	echo "$(tput bold)=====$REPO=====$(tput sgr0)"
+    cd "$ROOT_DIR" || root_dir_not_found
+	[ -d "$REPO" ] || git clone git@github.com:AutoScout24/$REPO.git
+    cd "$REPO"
+
+    # TODO BK: get dry run option from cli
+    git_commit_and_create_pr_to_custom_branch "$REPO" "$BRANCH" "$COMMIT_MSG" 0
+
+    continue
+done;
