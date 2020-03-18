@@ -10,8 +10,8 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - **OPEN A NEW TERMINAL AFTER SETUP IS DONE**, so that changes to .bash_profile/.bashrc/.zshrc are loaded.
 - It also asks for root directory where you have your git repos.
 - **Usage:** ```./setup "github team name"```
-- **Example(use this for [eng ret web team](https://github.com/orgs/AutoScout24/teams/as24-cxp-engagement-retention-web)):** ```./setup "eng-ret-web"```
-- **Example:** ```./setup "ConMon"```
+- **Example(for [eng ret web team](https://github.com/orgs/AutoScout24/teams/as24-cxp-engagement-retention-web)):** ```./setup "Engagement"```
+- **Example(for team FED):** ```./setup "ConMon"```
 
 ### Github access token
 - You need to create and store a Github access token in ~/.github_token
