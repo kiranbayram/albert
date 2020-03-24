@@ -35,6 +35,9 @@ help(){
 
 	echo -e "$(tput bold)\ncreate-label$(tput sgr0)"
 	$MY_DIR/create-label "help"
+
+	echo -e "$(tput bold)\nopen-pr$(tput sgr0)"
+	$MY_DIR/open-pr "help"
 }
 
 if [[ "$COMMAND" == "list-repos" ]]; then
@@ -57,9 +60,11 @@ elif [[ "$COMMAND" == "merge-prs" ]]; then
 	$MY_DIR/merge-prs "$@"	
 elif [[ "$COMMAND" == "create-label" ]]; then
 	$MY_DIR/create-label "$@"	
+elif [[ "$COMMAND" == "open-pr" ]]; then
+	$MY_DIR/open-pr "$@"	
 elif [[ "$COMMAND" == "help" ]]; then
 	help
 else
-	echo -e "Valid operations:\nhelp\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos\nremove-archived-repos\nmerge-prs\ncreate-label"
+	echo -e "Valid operations:\nhelp\nlist-repos\nmerge-ami-prs\nreplace-text\nsetup\nset-team\nexecute\nclone-all-repos\nremove-archived-repos\nmerge-prs\ncreate-label\nopen-pr"
 	exit 1
 fi

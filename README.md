@@ -76,3 +76,8 @@ It's tailor-made for MacOS at the moment, it won't work on other operating syste
 - Creates the defined label in all repos. It doesn't overwrite if label already exists.
 - **Usage:** ```albert create-label label-name "label description" color-code```
 - **Example:** ```albert create-label merge "Pull request can be automatically merged" 0e8a16```
+
+### Open PR
+- Commits to a given branch name and opens a PR. It doesn't refresh the local repos, so that manual changes can be made externally with other tools/editors.
+- **Usage:** ```albert open-pr "branch_name" "commit_message"```
+- **Example:** ```albert open-pr "test_branch" "This is a commit message"```
