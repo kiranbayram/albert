@@ -75,7 +75,6 @@ for REPO in $REPO_NAMES; do
         replace_text "$LOCAL_SEARCH_TEXT" "$LOCAL_NEW_TEXT"
 
         if [[ $SBT == 1 ]] && [ -f build.sbt ]; then
-            aws_login as24dev PowerUserAccess
             if [ -f ./sbt ]; then
                 ./sbt clean test
             else

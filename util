@@ -129,10 +129,6 @@ git_commit_and_create_pr_to_custom_branch(){
     fi
 }
 
-aws_login () {
-    eval "$(scloud account login -e "$1" "$2")"
-}
-
 root_dir_not_found(){
     echo "Root directory not found, exiting." && exit 1
 }
