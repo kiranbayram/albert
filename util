@@ -118,7 +118,16 @@ git_commit_and_create_pr_to_custom_branch(){
                     --arg branch "$BRANCH" \
                     '{title: $msg, body: $msg, head: $branch, base: "master"}' )
             
-            curl -d "$JSON" -X POST "https://api.github.com/repos/AutoScout24/$REPO/pulls?access_token=$ACCESS_TOKEN"
+            RESULT=$(curl -d "$JSON" -X POST "https://api.github.com/repos/AutoScout24/$REPO/pulls?access_token=$ACCESS_TOKEN")
+
+            STATE=$(echo "$RESULT" | jq ".state")
+
+            if [[ "$STATE" == "open" ]]; then
+                echo -e "$(tput setaf 2)PR opened$(tput sgr0)\n"
+            else
+                MESSAGE=$(echo "$RESULT" | jq ".message")
+                echo -e "$(tput setaf 1)failed: $MESSAGE$(tput sgr0)\n"
+            fi
 
             git checkout master
         else
